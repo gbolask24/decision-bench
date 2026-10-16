@@ -150,8 +150,12 @@ def cmd_score(a):
 
 
 def cmd_replay(a):
-    from .replay import ReplayError, build_replay
+    from .replay import REQUIRED_META, ReplayError, build_replay
     cfg = json.loads(Path(a.config).read_text())
+    missing = [f for f in REQUIRED_META if not cfg.get(f)]
+    if missing:  # checked before any file is read, so an unfinished config fails fast and clearly
+        print(f"replay: config is missing {', '.join(missing)}")
+        return 1
     data = Path(a.data)
     tests = {r["test"] for r in cfg["races"].values()} | ({cfg["spotlight"]["test"]} if cfg.get("spotlight") else set())
     items = {t: read_items(items_path(data, t)) for t in tests}
