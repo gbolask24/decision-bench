@@ -153,3 +153,20 @@ def test_test_labels_are_carried_to_results(tmp_path):
     r = build(tmp_path, cfg=config(test_labels={"T1": "Customer-support routing"}))
     assert r["results"]["labels"] == {"T1": "Customer-support routing"}
     assert "labels" not in build(tmp_path / "none")["results"]
+
+
+def test_totals_sum_every_logged_test_call_per_system(tmp_path):
+    t = build(tmp_path)["results"]["totals"]
+    assert t["T1"]["jev"] == {"calls": 6, "elapsed_s": 6.0, "cost_usd": pytest.approx(0.006)}
+    assert t["T1"]["opus-low"]["elapsed_s"] == 12.0
+    assert t["T5"]["jev"]["calls"] == 1  # only test-split items, first repeat
+
+
+def test_totals_count_failed_calls_and_skip_other_splits(tmp_path):
+    recs = records()
+    recs[0] = rec(recs[0]["item_id"], "jev", "a", 1.0, status="refusal")
+    dev = Item("T1-dev", "T1", "dev", "x", t1_items()[0].questions, {"intent": "a"})
+    recs.append(rec("T1-dev", "jev", "a", 50.0))
+    items = {"T1": t1_items() + [dev], "T5": t5_items(tmp_path)}
+    t = build(tmp_path, recs=recs, items=items)["results"]["totals"]["T1"]["jev"]
+    assert t["calls"] == 6 and t["elapsed_s"] == 6.0

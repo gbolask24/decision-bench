@@ -157,12 +157,13 @@ def cmd_replay(a):
         print(f"replay: config is missing {', '.join(missing)}")
         return 1
     data = Path(a.data)
+    summary = json.loads(Path(a.summary).read_text())
     tests = {r["test"] for r in cfg["races"].values()} | ({cfg["spotlight"]["test"]} if cfg.get("spotlight") else set())
+    tests |= set(summary.get("tasks", {}))  # totals cover every scored test, not only the raced ones
     items = {t: read_items(items_path(data, t)) for t in tests}
     out = Path(a.out)
     try:
-        replay = build_replay(cfg, items, score.load_logs([Path(p) for p in a.logs]),
-                              json.loads(Path(a.summary).read_text()), data, out)
+        replay = build_replay(cfg, items, score.load_logs([Path(p) for p in a.logs]), summary, data, out)
     except ReplayError as e:
         print(f"replay: {e}")
         return 1

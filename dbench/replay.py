@@ -93,6 +93,22 @@ def build_spotlight(spec: dict, items: list[Item], records: list[dict], systems:
             "picks": picks}
 
 
+def build_totals(items_by_task: dict[str, list[Item]], records: list[dict], systems: list[dict]) -> dict:
+    """Per test and system: logged calls on test items (first repeat), their summed time and cost.
+    Accuracy is not recomputed here; the video takes it from the scorer."""
+    out = {}
+    for task, items in items_by_task.items():
+        test_ids = {i.id for i in items if i.split == "test"}
+        first = _first(records, task)
+        out[task] = {}
+        for s in systems:
+            rs = [r for (iid, arm), r in first.items() if arm == s["id"] and iid in test_ids]
+            out[task][s["id"]] = {"calls": len(rs),
+                                  "elapsed_s": round(sum(float(r.get("elapsed_s", r.get("latency_s", 0.0))) for r in rs), 3),
+                                  "cost_usd": round(sum(float(r.get("cost_usd") or 0.0) for r in rs), 8)}
+    return out
+
+
 def build_replay(config: dict, items_by_task: dict[str, list[Item]], records: list[dict], summary: dict,
                  data_dir: Path, out_dir: Path) -> dict:
     for field in REQUIRED_META:
@@ -108,7 +124,7 @@ def build_replay(config: dict, items_by_task: dict[str, list[Item]], records: li
     tests = {t: v["primary"] for t, v in summary.get("tasks", {}).items()}
     meta = {k: config[k] for k in REQUIRED_META}
     meta.update(tag=config.get("tag", ""), generated_at=datetime.now(timezone.utc).isoformat())
-    results = {"tests": tests, "latency": summary.get("latency", {})}
+    results = {"tests": tests, "latency": summary.get("latency", {}), "totals": build_totals(items_by_task, records, systems)}
     if config.get("test_labels"):
         results["labels"] = config["test_labels"]
     return {"schema": SCHEMA, "meta": meta, "systems": systems, "scenes": config["scenes"], "races": races,
