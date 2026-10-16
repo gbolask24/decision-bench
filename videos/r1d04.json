@@ -72,7 +72,7 @@
     },
     "t3": {
       "test": "T3",
-      "label": "Category from photo and listing",
+      "label": "Photo input",
       "question": "category",
       "show_items": false,
       "placeholder": "Product photo and listing sent",
@@ -98,8 +98,8 @@
   },
   "test_labels": {
     "T1": "Customer-support routing",
-    "T2": "Category from listing text",
-    "T3": "Category from photo and listing",
+    "T2": "Text input",
+    "T3": "Photo input",
     "T4": "Intent, with off-topic messages",
     "T5": "Decision Bench, text and image"
   }
