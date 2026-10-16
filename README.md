@@ -1,4 +1,4 @@
-# Decision bench UK
+# Decision bench
 
 Jev 1.14 (TypeSafe), OpenAI's Decisions API (GPT-6 Luna) and Claude Opus 5.5 on the same five decision tests, 1,000 items each, all public data. Run from London on 17-18 October 2026 by Gbolagade Ishola. Results, items and logs are published here; nothing is tuned on test items.
 
