@@ -1,7 +1,7 @@
 """List prices on the run date, US dollars per million tokens. Check each page on the day and update.
 
 Jev: $0.042 input, output free (OpenRouter and LiteLLM listings, Oct 2026). Image pricing unpublished.
-Decisions: $0.10 input, output free (OpenAI Decisions guide).
+Decisions: $0.10 input, output free (OpenAI Decisions API guide).
 Opus 5.5: $4 input, $20 output (thinking billed as output), $0.20 cache read, $5 cache write (5 minute).
 """
 PRICES = {
