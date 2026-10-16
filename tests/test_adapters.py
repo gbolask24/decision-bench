@@ -93,3 +93,12 @@ def test_strip_images_keeps_logs_small():
                "messages": [{"content": [{"type": "image", "source": {"data": "B" * 5000}}]}]}
     s = json.dumps(adapters.strip_images(payload))
     assert "AAAA" not in s and "BBBB" not in s
+
+
+def test_call_logs_start_time_and_elapsed(monkeypatch):
+    from dbench import run
+    monkeypatch.setattr(run, "post", lambda url, headers, payload: {"http_status": 500, "latency_s": 0.2,
+                                                                     "attempts": 4, "text": "down"})
+    rec = run.call("jev", item(), Path("."))
+    assert rec["started_at"].endswith("+00:00") and rec["elapsed_s"] >= 0
+    assert rec["status"] == "transport_error" and rec["attempts"] == 4

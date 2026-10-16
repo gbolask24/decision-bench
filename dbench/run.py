@@ -85,8 +85,11 @@ def post(url: str, headers: dict, payload: dict) -> dict:
 
 def call(arm: str, item: Item, data_dir: Path) -> dict:
     url, headers, payload = build(arm, item, data_dir)
+    started_at = datetime.now(timezone.utc).isoformat()
+    t0 = time.perf_counter()
     res = post(url, headers, payload)
     record = {"arm": arm, "model_requested": ARMS[arm]["model"], "effort": ARMS[arm].get("effort"),
+              "started_at": started_at, "elapsed_s": time.perf_counter() - t0,  # elapsed includes retries
               "http_status": res["http_status"], "attempts": res["attempts"], "latency_s": res["latency_s"],
               "headers_sent": sorted(k for k in headers if k.lower().startswith("typesafe-")),
               "payload_sha256": hashlib.sha256(json.dumps(payload, sort_keys=True).encode()).hexdigest(),
