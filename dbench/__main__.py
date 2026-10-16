@@ -1,4 +1,4 @@
-"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export."""
+"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export, replay."""
 from __future__ import annotations
 
 import argparse
@@ -149,6 +149,24 @@ def cmd_score(a):
     print(f"wrote {a.out}")
 
 
+def cmd_replay(a):
+    from .replay import ReplayError, build_replay
+    cfg = json.loads(Path(a.config).read_text())
+    data = Path(a.data)
+    tests = {r["test"] for r in cfg["races"].values()} | ({cfg["spotlight"]["test"]} if cfg.get("spotlight") else set())
+    items = {t: read_items(items_path(data, t)) for t in tests}
+    out = Path(a.out)
+    try:
+        replay = build_replay(cfg, items, score.load_logs([Path(p) for p in a.logs]),
+                              json.loads(Path(a.summary).read_text()), data, out)
+    except ReplayError as e:
+        print(f"replay: {e}")
+        return 1
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "replay.json").write_text(json.dumps(replay, indent=1, ensure_ascii=False) + "\n")
+    print(f"wrote {out / 'replay.json'}")
+
+
 def cmd_export(a):
     from .export import export
     for f in export(Path(a.data), [Path(p) for p in a.logs], Path(a.out)):
@@ -192,10 +210,14 @@ def main(argv=None) -> int:
     e = sub.add_parser("export", help="public copies of items and logs, without Amazon text or images")
     e.add_argument("logs", nargs="*")
     e.add_argument("--out", default="public")
+    rp = sub.add_parser("replay", help="write replay.json for a race video")
+    rp.add_argument("--config", required=True)
+    rp.add_argument("--logs", nargs="+", default=["logs/accuracy.jsonl"])
+    rp.add_argument("--summary", default="results/summary.json")
+    rp.add_argument("--out", default="results/replay")
     a = ap.parse_args(argv)
-    {"sample": cmd_sample, "manifest": cmd_manifest, "probe": cmd_probe, "run": cmd_run,
-     "latency": cmd_latency, "score": cmd_score, "export": cmd_export}[a.cmd](a)
-    return 0
+    return {"sample": cmd_sample, "manifest": cmd_manifest, "probe": cmd_probe, "run": cmd_run,
+            "latency": cmd_latency, "score": cmd_score, "export": cmd_export, "replay": cmd_replay}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":
