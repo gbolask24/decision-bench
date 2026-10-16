@@ -32,7 +32,7 @@ cp .env.example .env    # add the three keys; .env is never committed
 
 ## Before the run
 
-1. Sample: `python -m dbench sample T1`, `sample T2T3` (streams the Amazon file and fetches about 1,050 images, resized to a 1,024 px longest side, JPEG), `sample T4`, `sample T5 --bench-repo ../decision-bench` (a sparse clone of github.com/atlanai/decision-bench, data only).
+1. Sample: `python -m dbench sample T1`, `sample T2T3` (streams the Amazon file and fetches about 1,050 images, resized to a 1,024 px longest side, JPEG), `sample T4`, `sample T5 --bench-repo ../atlanai-decision-bench` (a sparse clone of github.com/atlanai/decision-bench, data only).
 2. Probe each system on one dev item: `python -m dbench probe --task T1 --arms jev,decisions,opus-low`, then `--task T3` for images. Every arm must come back `ok`. If Jev's or Decisions' response shape has changed, fix `dbench/adapters.py` before anything else.
 3. Pilot on the dev splits: `python -m dbench run --task T1 --split dev --log logs/pilot.jsonl`, and the same for T2 to T5. Any change to wording after the pilot is logged and applied to all three systems.
 4. Freeze: `python -m dbench manifest` writes SHA-256 hashes of every item file and image. Commit items, manifest, code and `PREREGISTRATION.md`, sign a tag, push, post the commit hash on X.

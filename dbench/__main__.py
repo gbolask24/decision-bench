@@ -165,7 +165,7 @@ def main(argv=None) -> int:
     s.add_argument("--amazon", help="local meta_Tools_and_Home_Improvement.jsonl.gz, or the URL (default)")
     s.add_argument("--exclude", help="file of parent_asin values to leave out (the SKU-50 items)")
     s.add_argument("--clinc")
-    s.add_argument("--bench-repo", default="../decision-bench")
+    s.add_argument("--bench-repo", default="../atlanai-decision-bench")
     m = sub.add_parser("manifest")
     m.add_argument("--out", default="manifest.json")
     for name in ("probe", "run"):
