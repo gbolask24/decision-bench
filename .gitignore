@@ -1,0 +1,12 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+data/raw/
+data/images/
+.pytest_cache/
+data/items/T2.jsonl
+data/items/T3.jsonl
+logs/
+results/
+logs_sample_*.txt
