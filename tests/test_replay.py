@@ -147,3 +147,9 @@ def test_cli_returns_1_when_the_config_is_incomplete(tmp_path):
     assert main(["--data", str(tmp_path), "replay", "--config", str(tmp_path / "cfg.json"),
                  "--logs", str(tmp_path / "l.jsonl"), "--summary", str(tmp_path / "s.json"),
                  "--out", str(tmp_path / "out")]) == 1
+
+
+def test_test_labels_are_carried_to_results(tmp_path):
+    r = build(tmp_path, cfg=config(test_labels={"T1": "Customer-support routing"}))
+    assert r["results"]["labels"] == {"T1": "Customer-support routing"}
+    assert "labels" not in build(tmp_path / "none")["results"]

@@ -108,5 +108,8 @@ def build_replay(config: dict, items_by_task: dict[str, list[Item]], records: li
     tests = {t: v["primary"] for t, v in summary.get("tasks", {}).items()}
     meta = {k: config[k] for k in REQUIRED_META}
     meta.update(tag=config.get("tag", ""), generated_at=datetime.now(timezone.utc).isoformat())
+    results = {"tests": tests, "latency": summary.get("latency", {})}
+    if config.get("test_labels"):
+        results["labels"] = config["test_labels"]
     return {"schema": SCHEMA, "meta": meta, "systems": systems, "scenes": config["scenes"], "races": races,
-            "spotlight": spotlight, "results": {"tests": tests, "latency": summary.get("latency", {})}}
+            "spotlight": spotlight, "results": results}

@@ -1,31 +1,106 @@
 {
-  "title": "Jev 1.14 vs OpenAI Decisions vs Claude Opus 5.5",
+  "title": "Jev 1.14 vs OpenAI Decisions API vs Claude Opus 5.5",
   "run_date": "2026-10-18",
   "commit": "",
   "tag": "",
   "logs_url": "https://github.com/gbolask24/decision-bench/tree/main/public/logs",
   "repo_url": "https://github.com/gbolask24/decision-bench",
-  "selection_rule": "test items in seeded random order, seed 1017",
+  "selection_rule": "seeded random order, seed 1017",
   "seed": 1017,
   "systems": [
-    {"id": "jev", "name": "Jev 1.14", "model": "jev-1.14.0", "kind": "decision model"},
-    {"id": "decisions", "name": "OpenAI Decisions", "model": "gpt-6-luna", "kind": "decision model"},
-    {"id": "opus-low", "name": "Claude Opus 5.5", "model": "claude-opus-5-5, low effort", "kind": "general model"}
+    {
+      "id": "jev",
+      "name": "Jev 1.14",
+      "model": "jev-1.14.0",
+      "kind": "decision model"
+    },
+    {
+      "id": "decisions",
+      "name": "OpenAI Decisions API",
+      "model": "gpt-6-luna",
+      "kind": "decision API, beta"
+    },
+    {
+      "id": "opus-low",
+      "name": "Claude Opus 5.5",
+      "model": "claude-opus-5-5, low effort",
+      "kind": "general model"
+    }
   ],
   "scenes": [
-    {"type": "title", "duration_s": 3},
-    {"type": "race", "race": "t1", "duration_s": "auto"},
-    {"type": "race", "race": "t3", "duration_s": "auto"},
-    {"type": "spotlight", "duration_s": 6},
-    {"type": "results", "duration_s": 10},
-    {"type": "receipt", "duration_s": 3}
+    {
+      "type": "title",
+      "duration_s": 3
+    },
+    {
+      "type": "race",
+      "race": "t1",
+      "duration_s": "auto"
+    },
+    {
+      "type": "race",
+      "race": "t3",
+      "duration_s": "auto"
+    },
+    {
+      "type": "spotlight",
+      "duration_s": 6
+    },
+    {
+      "type": "results",
+      "duration_s": 10
+    },
+    {
+      "type": "receipt",
+      "duration_s": 3
+    }
   ],
   "races": {
-    "t1": {"test": "T1", "label": "Customer-support routing", "question": "intent", "show_items": true,
-           "placeholder": "", "segments": [{"from_s": 0, "to_s": 20, "speed": 1}]},
-    "t3": {"test": "T3", "label": "Product category from photo and listing", "question": "category",
-           "show_items": false, "placeholder": "Product photo and listing sent",
-           "segments": [{"from_s": 0, "to_s": 15, "speed": 1}]}
+    "t1": {
+      "test": "T1",
+      "label": "Customer-support routing",
+      "question": "intent",
+      "show_items": true,
+      "placeholder": "",
+      "segments": [
+        {
+          "from_s": 0,
+          "to_s": 20,
+          "speed": 1
+        }
+      ]
+    },
+    "t3": {
+      "test": "T3",
+      "label": "Category from photo and listing",
+      "question": "category",
+      "show_items": false,
+      "placeholder": "Product photo and listing sent",
+      "segments": [
+        {
+          "from_s": 0,
+          "to_s": 15,
+          "speed": 1
+        }
+      ]
+    }
   },
-  "spotlight": {"test": "T5", "licences": {}, "allowed_licences": ["CC0 1.0", "CC BY 4.0", "CC BY-SA 4.0", "MIT", "Apache-2.0"]}
+  "spotlight": {
+    "test": "T5",
+    "licences": {},
+    "allowed_licences": [
+      "CC0 1.0",
+      "CC BY 4.0",
+      "CC BY-SA 4.0",
+      "MIT",
+      "Apache-2.0"
+    ]
+  },
+  "test_labels": {
+    "T1": "Customer-support routing",
+    "T2": "Category from listing text",
+    "T3": "Category from photo and listing",
+    "T4": "Intent, with off-topic messages",
+    "T5": "Decision Bench, text and image"
+  }
 }
