@@ -141,3 +141,34 @@ class Run:
 def list_runs(root: Path) -> list[dict]:
     runs = [json.loads(p.read_text()) for p in root.glob("*/run.json")] if root.exists() else []
     return sorted(runs, key=lambda m: m.get("started_at", ""), reverse=True)
+
+
+SYSTEM_NAMES = {"jev": "Jev 1.14", "decisions": "OpenAI Decisions API", "opus-low": "Claude Opus 5.5, low effort",
+                "opus-medium": "Claude Opus 5.5, medium effort"}
+TEST_NAMES = {"T1": "Customer-support routing", "T2": "Product category, text", "T3": "Product category, photo",
+              "T4": "Intent, with off-topic messages", "T5": "Decision Bench, text and image"}
+
+
+def phone_rows(root: Path) -> tuple[list[dict], list[dict]]:
+    """Every run's summary as two flat tables for the phone dashboard: one row per run, one per run, test and system."""
+    runs, rows = [], []
+    for m in list_runs(root):
+        f = root / m["name"] / "summary.json"
+        if not f.exists():
+            continue
+        s = json.loads(f.read_text())
+        runs.append({"run": m["name"], "status": m.get("status"), "split": m.get("split"),
+                     "started_at": m.get("started_at"), "ended_at": m.get("ended_at"), "updated_at": s["updated_at"],
+                     "commit": (m.get("commit") or "")[:7], "done_total": s["done_total"],
+                     "planned_total": s["planned_total"], "failed_total": s["failed_total"],
+                     "cost_total_usd": round(s["cost_total_usd"], 6),
+                     "input_tokens": sum(r["input_tokens"] for r in s["rows"]),
+                     "output_tokens": sum(r["output_tokens"] for r in s["rows"])})
+        for r in s["rows"]:
+            rows.append({"run": m["name"], "task": r["task"], "test": TEST_NAMES.get(r["task"], r["task"]),
+                         "arm": r["arm"], "system": SYSTEM_NAMES.get(r["arm"], r["arm"]), "planned": r["planned"],
+                         "done": r["done"], "ok": r["ok"], "failed": sum(r["failed"].values()), "correct": r["correct"],
+                         "pct_right": r["pct_right"], "input_tokens": r["input_tokens"],
+                         "output_tokens": r["output_tokens"], "cost_usd": round(r["cost_usd"], 6),
+                         "p50_s": r["p50_s"], "p95_s": r["p95_s"], "per_min": r["per_min"], "eta_s": r["eta_s"]})
+    return runs, rows

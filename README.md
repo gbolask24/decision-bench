@@ -52,6 +52,7 @@ python -m dbench export logs/runs/*/calls.jsonl
 ```
 
 A run can be stopped and restarted with the same name; calls already logged are skipped and `run.json` counts the restart. Accuracy runs use eight parallel workers with tests and systems interleaved. Latency is a separate sample: 300 items, one request at a time, each item sent to the three systems in a random order, the first 20 discarded as warm-up. `python -m dbench summary --run <name>` rebuilds a run's summary from its calls.
+`python -m dbench phone` flattens every run's summary into `logs/phone/runs.json` and `rows.json` (one row per run, and one per run, test and system), the two files behind the phone dashboard.
 
 ## Scoring
 

@@ -1,4 +1,4 @@
-"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export, replay, summary, watch."""
+"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export, replay, summary, watch, phone."""
 from __future__ import annotations
 
 import argparse
@@ -181,6 +181,16 @@ def cmd_summary(a):
     print(f"{run.folder / 'summary.json'}: {s['done_total']} of {s['planned_total']} calls, ${s['cost_total_usd']:.2f}")
 
 
+def cmd_phone(a):
+    from .live import phone_rows
+    runs, rows = phone_rows(Path(a.runs_root))
+    out = Path(a.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "runs.json").write_text(json.dumps(runs, indent=1) + "\n")
+    (out / "rows.json").write_text(json.dumps(rows, indent=1) + "\n")
+    print(f"{out}: {len(runs)} runs, {len(rows)} rows")
+
+
 def cmd_watch(a):
     from .watch import make_server
     srv = make_server(Path(a.runs_root), a.port)
@@ -311,6 +321,9 @@ def main(argv=None) -> int:
     sm = sub.add_parser("summary", help="rebuild a run's summary.json from its calls")
     sm.add_argument("--run", required=True)
     sm.add_argument("--runs-root", default="logs/runs")
+    ph = sub.add_parser("phone", help="flatten every run's summary into runs.json and rows.json for the phone dashboard")
+    ph.add_argument("--runs-root", default="logs/runs")
+    ph.add_argument("--out", default="logs/phone")
     w = sub.add_parser("watch", help="local page that follows runs live")
     w.add_argument("--runs-root", default="logs/runs")
     w.add_argument("--port", type=int, default=8765)
@@ -322,7 +335,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     return {"sample": cmd_sample, "manifest": cmd_manifest, "probe": cmd_probe, "run": cmd_run,
             "latency": cmd_latency, "score": cmd_score, "export": cmd_export, "replay": cmd_replay,
-            "fit-images": cmd_fit_images, "summary": cmd_summary, "watch": cmd_watch}[a.cmd](a) or 0
+            "fit-images": cmd_fit_images, "summary": cmd_summary, "watch": cmd_watch, "phone": cmd_phone}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":

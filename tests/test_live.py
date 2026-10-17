@@ -168,3 +168,17 @@ def test_watch_serves_the_page_runs_and_summaries(tmp_path):
             assert e.code == 404
     finally:
         srv.shutdown()
+
+
+def test_phone_export_flattens_every_run_into_two_row_files(tmp_path):
+    from dbench.live import phone_rows
+    data, run = _run_with_calls(tmp_path)
+    from dbench.__main__ import main
+    main(["--data", str(data), "summary", "--run", "pilot", "--runs-root", str(tmp_path / "runs")])
+    runs, rows = phone_rows(tmp_path / "runs")
+    assert runs[0]["run"] == "pilot" and runs[0]["done_total"] == 2 and runs[0]["planned_total"] == 3
+    assert runs[0]["input_tokens"] == 200
+    r = rows[0]
+    assert (r["run"], r["task"], r["arm"], r["system"], r["done"], r["planned"]) == ("pilot", "T1", "jev", "Jev 1.14", 2, 3)
+    assert r["test"] == "Customer-support routing" and r["failed"] == 0
+
