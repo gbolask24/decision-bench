@@ -187,3 +187,20 @@ def test_phone_export_flattens_every_run_into_two_row_files(tmp_path):
     assert r["test"] == "Customer-support routing" and r["failed"] == 0 and r["wrong"] == 0
     assert r["elapsed_total_s"] == pytest.approx(2.0)
 
+
+
+def test_a_limited_run_plans_only_its_limit(tmp_path, monkeypatch):
+    from dbench import run as runner
+    from dbench.__main__ import items_path, main
+    from dbench.items import write_items
+    data = tmp_path / "data"
+    write_items(items_path(data, "T1"), [Item(f"T1-{k}", "T1", "test", "x",
+                [Question("intent", "What?", [Option("a", "A"), Option("b", "B")]),
+                 Question("category", "What?", [Option("a", "A"), Option("b", "B")])], {"intent": "a", "category": "a"})
+                for k in range(30)])
+    monkeypatch.setattr(runner, "call", lambda arm, item, d: {"arm": arm, "status": "ok", "elapsed_s": 0.1, "answers": {}})
+    monkeypatch.setattr("dbench.__main__.load_env", lambda: None)
+    assert main(["--data", str(data), "run", "--task", "T1", "--arms", "jev", "--limit", "10", "--repeats", "3",
+                 "--run", "stab", "--runs-root", str(tmp_path / "runs")]) == 0
+    s = json.loads((tmp_path / "runs" / "stab" / "summary.json").read_text())
+    assert s["planned_total"] == 30 and s["done_total"] == 30 and s["run"]["limit"] == 10

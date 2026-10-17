@@ -150,6 +150,7 @@ def cmd_run(a):
     import time
     from .live import Run
     run = Run.start(Path(a.runs_root), a.run, {"split": a.split, "tasks": tasks, "arms": arms, "repeats": a.repeats,
+                                                "limit": a.limit,
                                                 "workers": a.workers, "command": " ".join(["python -m dbench"] + sys.argv[1:])})
     stats = _run_stats(run, Path(a.data))
     run.write_summary(stats)
@@ -175,7 +176,8 @@ def cmd_run(a):
 def _run_stats(run, data: Path):
     from .live import RunStats
     m = run.meta()
-    by_task = {t: [i for i in read_items(items_path(data, t)) if i.split == m.get("split", "test")] for t in m["tasks"]}
+    by_task = {t: [i for i in read_items(items_path(data, t)) if i.split == m.get("split", "test")][: m.get("limit") or None]
+               for t in m["tasks"]}
     stats = RunStats(by_task, {t: TASKS[t] for t in m["tasks"]}, m["arms"], m.get("repeats", 1),
                      only=_opus_sample(data, m.get("split", "test")))
     if run.calls.exists():
