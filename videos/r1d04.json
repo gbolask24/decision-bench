@@ -1,106 +1,110 @@
 {
-  "title": "Jev 1.14 vs OpenAI Decisions API vs Claude Opus 5.5",
-  "run_date": "2026-10-18",
-  "commit": "",
-  "tag": "",
-  "logs_url": "https://github.com/gbolask24/decision-bench/tree/main/public/logs",
-  "repo_url": "https://github.com/gbolask24/decision-bench",
-  "selection_rule": "seeded random order, seed 1017",
-  "seed": 1017,
-  "systems": [
-    {
-      "id": "jev",
-      "name": "Jev 1.14",
-      "model": "jev-1.14.0",
-      "kind": "decision model"
-    },
-    {
-      "id": "decisions",
-      "name": "OpenAI Decisions API",
-      "model": "gpt-6-luna",
-      "kind": "decision API, beta"
-    },
-    {
-      "id": "opus-low",
-      "name": "Claude Opus 5.5",
-      "model": "claude-opus-5-5, low effort",
-      "kind": "general model"
-    }
-  ],
-  "scenes": [
-    {
-      "type": "title",
-      "duration_s": 3
-    },
-    {
-      "type": "race",
-      "race": "t1",
-      "duration_s": "auto"
-    },
-    {
-      "type": "race",
-      "race": "t3",
-      "duration_s": "auto"
-    },
-    {
-      "type": "spotlight",
-      "duration_s": 6
-    },
-    {
-      "type": "results",
-      "duration_s": 18
-    },
-    {
-      "type": "receipt",
-      "duration_s": 3
-    }
-  ],
-  "races": {
-    "t1": {
-      "test": "T1",
-      "label": "Customer-support routing",
-      "question": "intent",
-      "show_items": true,
-      "placeholder": "",
-      "segments": [
-        {
-          "from_s": 0,
-          "to_s": 20,
-          "speed": 1
-        }
-      ]
-    },
-    "t3": {
-      "test": "T3",
-      "label": "Photo input",
-      "question": "category",
-      "show_items": false,
-      "placeholder": "Product photo and listing sent",
-      "segments": [
-        {
-          "from_s": 0,
-          "to_s": 15,
-          "speed": 1
-        }
-      ]
-    }
+ "title": "Jev 1.14 vs OpenAI Decisions API vs Claude Opus 5.5",
+ "run_date": "2026-10-17",
+ "commit": "03fc011025eb4caf71233fe827fbbbc257a5acfa",
+ "tag": "prereg-2026-10-17",
+ "logs_url": "https://github.com/gbolask24/decision-bench/tree/main/public/logs",
+ "repo_url": "https://github.com/gbolask24/decision-bench",
+ "selection_rule": "seeded random order, seed 1017",
+ "seed": 1017,
+ "systems": [
+  {
+   "id": "jev",
+   "name": "Jev 1.14",
+   "model": "jev-1.14.0",
+   "kind": "decision model"
   },
-  "spotlight": {
-    "test": "T5",
-    "licences": {},
-    "allowed_licences": [
-      "CC0 1.0",
-      "CC BY 4.0",
-      "CC BY-SA 4.0",
-      "MIT",
-      "Apache-2.0"
-    ]
+  {
+   "id": "decisions",
+   "name": "OpenAI Decisions API",
+   "model": "gpt-6-luna",
+   "kind": "decision API, beta"
   },
-  "test_labels": {
-    "T1": "Customer-support routing",
-    "T2": "Text input",
-    "T3": "Photo input",
-    "T4": "Intent, with off-topic messages",
-    "T5": "Decision Bench, text and image"
+  {
+   "id": "opus-low",
+   "name": "Claude Opus 5.5",
+   "model": "claude-opus-5-5, low effort",
+   "kind": "general model"
   }
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "duration_s": 3
+  },
+  {
+   "type": "race",
+   "race": "t1",
+   "duration_s": "auto"
+  },
+  {
+   "type": "race",
+   "race": "t3",
+   "duration_s": "auto"
+  },
+  {
+   "type": "spotlight",
+   "duration_s": 6
+  },
+  {
+   "type": "results",
+   "duration_s": 18
+  },
+  {
+   "type": "receipt",
+   "duration_s": 3
+  }
+ ],
+ "races": {
+  "t1": {
+   "test": "T1",
+   "label": "Customer-support routing",
+   "question": "intent",
+   "show_items": true,
+   "placeholder": "",
+   "segments": [
+    {
+     "from_s": 0,
+     "to_s": 20,
+     "speed": 1
+    }
+   ]
+  },
+  "t3": {
+   "test": "T3",
+   "label": "Photo input",
+   "question": "category",
+   "show_items": false,
+   "placeholder": "Product photo and listing sent",
+   "segments": [
+    {
+     "from_s": 0,
+     "to_s": 15,
+     "speed": 1
+    }
+   ]
+  }
+ },
+ "spotlight": {
+  "test": "T5",
+  "licences": {
+   "FIN-3": "CC BY 4.0",
+   "DAT-3": "CC BY 4.0",
+   "DSN-1": "Apache-2.0"
+  },
+  "allowed_licences": [
+   "CC0 1.0",
+   "CC BY 4.0",
+   "CC BY-SA 4.0",
+   "MIT",
+   "Apache-2.0"
+  ]
+ },
+ "test_labels": {
+  "T1": "Customer-support routing",
+  "T2": "Text input",
+  "T3": "Photo input",
+  "T4": "Intent, with off-topic messages",
+  "T5": "Decision Bench, text and image"
+ }
 }
