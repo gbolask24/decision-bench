@@ -60,7 +60,17 @@ def jev_request(item: Item, data_dir: Path, model: str) -> tuple[dict, dict]:
                              for q in item.questions}}
     headers = {}
     if item.images:
-        payload["images"] = _data_uri(item, data_dir)
+        # docs.typesafe.ai/images: each image is one entry in a top-level `assets` map, keyed by a unique
+        # reference string that appears where the image belongs (here a list in state). Plain base64, no
+        # data: prefix; format "png", "jpg" or "jpeg".
+        refs, assets = [], {}
+        for k, im in enumerate(item.images):
+            ref = f"image-{item.id}-{k + 1}"
+            refs.append(ref)
+            assets[ref] = {"type": "image", "format": "png" if im.mime == "image/png" else "jpg",
+                           "data_base64": base64.b64encode((data_dir / im.path).read_bytes()).decode()}
+        payload["state"] = {"text": item.text, "images": refs}
+        payload["assets"] = assets
         headers["TypeSafe-Danger-Zone-Images"] = "true"
     return payload, headers
 
@@ -223,7 +233,7 @@ def strip_images(payload: dict) -> dict:
     """The payload as logged: base64 image data replaced by its length, so logs stay small."""
     def walk(v):
         if isinstance(v, dict):
-            return {k: ("[base64 omitted]" if k == "data" and isinstance(x, str) and len(x) > 200 else walk(x))
+            return {k: ("[base64 omitted]" if k in ("data", "data_base64") and isinstance(x, str) and len(x) > 200 else walk(x))
                     for k, x in v.items()}
         if isinstance(v, list):
             return [walk(x) for x in v]

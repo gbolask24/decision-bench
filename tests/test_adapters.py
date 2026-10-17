@@ -26,7 +26,10 @@ def test_images_go_to_all_three_and_jev_gets_the_opt_in_header(tmp_path):
     jp, jh = adapters.jev_request(it, tmp_path, "jev-1.14.0")
     dp, _ = adapters.decisions_request(it, tmp_path, "gpt-6-luna")
     op, _ = adapters.opus_request(it, tmp_path, "claude-opus-5-5", "low")
-    assert jp["images"][0].startswith("data:image/jpeg;base64,")
+    # docs.typesafe.ai/images: a top-level assets map, each asset referenced by a unique string in state
+    ref = jp["state"]["images"][0]
+    assert jp["state"]["text"] == "where is my parcel" and "images" not in {k for k in jp if k != "state"}
+    assert jp["assets"] == {ref: {"type": "image", "format": "jpg", "data_base64": "/9hmYWtl"}}
     assert jh == {"TypeSafe-Danger-Zone-Images": "true"}
     parts = dp["input"][0]["content"]
     assert parts[0] == {"type": "input_text", "text": "where is my parcel"} and parts[1]["type"] == "input_image"
@@ -90,9 +93,10 @@ def test_negative_or_zero_probabilities_are_invalid():
 
 def test_strip_images_keeps_logs_small():
     payload = {"images": ["data:image/jpeg;base64," + "A" * 5000],
+               "assets": {"r": {"type": "image", "format": "jpg", "data_base64": "C" * 5000}},
                "messages": [{"content": [{"type": "image", "source": {"data": "B" * 5000}}]}]}
     s = json.dumps(adapters.strip_images(payload))
-    assert "AAAA" not in s and "BBBB" not in s
+    assert "AAAA" not in s and "BBBB" not in s and "CCCC" not in s
 
 
 def test_call_logs_start_time_and_elapsed(monkeypatch):
@@ -102,3 +106,13 @@ def test_call_logs_start_time_and_elapsed(monkeypatch):
     rec = run.call("jev", item(), Path("."))
     assert rec["started_at"].endswith("+00:00") and rec["elapsed_s"] >= 0
     assert rec["status"] == "transport_error" and rec["attempts"] == 4
+
+
+def test_jev_png_assets_say_png_and_refs_are_unique(tmp_path):
+    (tmp_path / "a.png").write_bytes(b"\x89PNGfake")
+    (tmp_path / "b.png").write_bytes(b"\x89PNGfake")
+    it = item([Image("a.png", "image/png", "h1"), Image("b.png", "image/png", "h1")])
+    jp, _ = adapters.jev_request(it, tmp_path, "jev-1.14.0")
+    refs = jp["state"]["images"]
+    assert len(set(refs)) == 2 and set(refs) == set(jp["assets"])
+    assert all(a["format"] == "png" for a in jp["assets"].values())

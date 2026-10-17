@@ -192,6 +192,8 @@ def fetch_image(url: str, dest: Path, data_dir: Path, longest: int = 1024) -> Im
     im.thumbnail((longest, longest))
     dest.parent.mkdir(parents=True, exist_ok=True)
     im.save(dest, "JPEG", quality=90)
+    from .images import fit_image
+    fit_image(dest)  # inside Jev's 280-1568 px limits; every system gets this same file
     return Image(str(dest.relative_to(data_dir)), "image/jpeg", sha256_file(dest))
 
 
@@ -247,6 +249,8 @@ def t5_decision_bench(cases: list[dict], repo: Path, data_dir: Path, seed: int =
             dst = data_dir / "images" / "T5" / Path(a["path"]).name
             dst.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(repo / a["path"], dst)
+            from .images import fit_image
+            fit_image(dst)  # inside Jev's limits; same file for every system
             images.append(Image(str(dst.relative_to(data_dir)), a["mime_type"], sha256_file(dst)))
         state = c["state"] if isinstance(c["state"], str) else json.dumps(c["state"], ensure_ascii=False)
         items.append(Item(f"T5-{c['id']}", "T5", "test", state, [Question(q["id"], q["instructions"], opts)],

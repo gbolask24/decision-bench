@@ -79,14 +79,16 @@ def test_t4_clinc_counts_and_out_of_scope_option():
 def test_t5_decision_bench_rows_and_images(tmp_path):
     repo, data = tmp_path / "repo", tmp_path / "data"
     (repo / "data" / "assets").mkdir(parents=True)
-    (repo / "data" / "assets" / "p.png").write_bytes(b"png")
+    from PIL import Image as PILImage
+    PILImage.new("RGB", (400, 400), (10, 20, 30)).save(repo / "data" / "assets" / "p.png", "PNG")  # inside Jev's limits
+    original = (repo / "data" / "assets" / "p.png").read_bytes()
     cases = [{"id": "c1", "task": "spam", "state": {"text": "hi"}, "assets": [{"path": "data/assets/p.png", "mime_type": "image/png", "alt_text": "x"}],
               "questions": [{"id": "is_spam", "type": "choice", "instructions": "Spam?", "options": {"yes": "Spam", "no": "Not spam"},
                              "gold": "no", "option_order": ["no", "yes"]}]}]
     items = sample.t5_decision_bench(cases, repo, data)
     it = items[0]
     assert it.id == "T5-c1" and it.gold == {"is_spam": "no"} and it.questions[0].values() == ["no", "yes"]
-    assert json.loads(it.text) == {"text": "hi"} and (data / it.images[0].path).read_bytes() == b"png"
+    assert json.loads(it.text) == {"text": "hi"} and (data / it.images[0].path).read_bytes() == original
 
 
 def test_items_round_trip(tmp_path):

@@ -85,6 +85,15 @@ def cmd_manifest(a):
     print(f"wrote {out}: {len(man['items'])} item files, {len(man['images'])} images")
 
 
+def cmd_fit_images(a):
+    from .images import fit_items
+    data = Path(a.data)
+    for t in a.tasks:
+        n = fit_items(data, items_path(data, t))
+        print(f"{t}: {n} images brought inside Jev's limits; hashes rewritten")
+    print("re-run `python -m dbench manifest` so the manifest matches")
+
+
 def _items(a, split):
     its = [i for i in read_items(items_path(Path(a.data), a.task)) if i.split == split]
     return its[: a.limit] if getattr(a, "limit", None) else its
@@ -215,6 +224,8 @@ def main(argv=None) -> int:
     e = sub.add_parser("export", help="public copies of items and logs, without Amazon text or images")
     e.add_argument("logs", nargs="*")
     e.add_argument("--out", default="public")
+    fi = sub.add_parser("fit-images", help="pad or shrink images to Jev's 280-1568 px limits; same file for every system")
+    fi.add_argument("--tasks", nargs="+", default=["T3", "T5"])
     rp = sub.add_parser("replay", help="write replay.json for a race video")
     rp.add_argument("--config", required=True)
     rp.add_argument("--logs", nargs="+", default=["logs/accuracy.jsonl"])
@@ -222,7 +233,8 @@ def main(argv=None) -> int:
     rp.add_argument("--out", default="results/replay")
     a = ap.parse_args(argv)
     return {"sample": cmd_sample, "manifest": cmd_manifest, "probe": cmd_probe, "run": cmd_run,
-            "latency": cmd_latency, "score": cmd_score, "export": cmd_export, "replay": cmd_replay}[a.cmd](a) or 0
+            "latency": cmd_latency, "score": cmd_score, "export": cmd_export, "replay": cmd_replay,
+            "fit-images": cmd_fit_images}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":
