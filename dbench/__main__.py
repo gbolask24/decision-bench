@@ -98,6 +98,13 @@ def cmd_fit_images(a):
     print("re-run `python -m dbench manifest` so the manifest matches")
 
 
+def _opus_sample(data: Path, split: str) -> dict[str, set[str]]:
+    """The pre-registered Opus sample, from every test's whole split (never a limited list)."""
+    by_task = {t: [i for i in read_items(items_path(data, t)) if i.split == split]
+               for t in TASKS if items_path(data, t).exists()}
+    return runner.arm_subsets(by_task)
+
+
 def _items(a, split, task=None):
     its = [i for i in read_items(items_path(Path(a.data), task or a.task)) if i.split == split]
     return its[: a.limit] if getattr(a, "limit", None) else its
@@ -133,8 +140,10 @@ def cmd_run(a):
         raise SystemExit(f"run: unknown test {', '.join(unknown)}")
     by_task = {t: _items(a, a.split, t) for t in tasks}
     items = [i for its in by_task.values() for i in its]
+    only = _opus_sample(Path(a.data), a.split)
     if not a.run:
-        n = runner.run_accuracy(items, arms, Path(a.data), runner.Log(Path(a.log)), workers=a.workers, repeats=a.repeats)
+        n = runner.run_accuracy(items, arms, Path(a.data), runner.Log(Path(a.log)), workers=a.workers, repeats=a.repeats,
+                                only=only)
         print(f"{n} calls written to {a.log}")
         return
     import threading
@@ -155,7 +164,7 @@ def cmd_run(a):
 
     try:
         n = runner.run_accuracy(items, arms, Path(a.data), runner.Log(run.calls), workers=a.workers,
-                                repeats=a.repeats, on_record=on_record)
+                                repeats=a.repeats, on_record=on_record, only=only)
     except BaseException:
         run.finish(stats, "stopped")
         raise
@@ -167,7 +176,8 @@ def _run_stats(run, data: Path):
     from .live import RunStats
     m = run.meta()
     by_task = {t: [i for i in read_items(items_path(data, t)) if i.split == m.get("split", "test")] for t in m["tasks"]}
-    stats = RunStats(by_task, {t: TASKS[t] for t in m["tasks"]}, m["arms"], m.get("repeats", 1))
+    stats = RunStats(by_task, {t: TASKS[t] for t in m["tasks"]}, m["arms"], m.get("repeats", 1),
+                     only=_opus_sample(data, m.get("split", "test")))
     if run.calls.exists():
         for line in run.calls.read_text().splitlines():
             stats.add(json.loads(line))
@@ -206,7 +216,8 @@ def cmd_latency(a):
     items = []
     for t in a.tasks.split(","):
         items += [i for i in read_items(items_path(Path(a.data), t)) if i.split == "test"]
-    n = runner.run_latency(items, a.arms.split(","), Path(a.data), runner.Log(Path(a.log)), n=a.n, window=a.window)
+    n = runner.run_latency(items, a.arms.split(","), Path(a.data), runner.Log(Path(a.log)), n=a.n, window=a.window,
+                           only=_opus_sample(Path(a.data), "test"))
     print(f"{n} calls written to {a.log}")
 
 
@@ -228,10 +239,18 @@ def cmd_score(a):
                 i.accept = {"category": accept.get(i.gold["category"], [])}
         rows = score.item_rows(items, records, question, arms)
         rows_by_task[task] = rows
-        t = {"primary": score.summarise(rows, arms, a.resamples), "stability": score.flip_rate(
+        # Every item for the decision systems; the sampled arms (Opus) on their one-in-ten sample, beside them.
+        full = [x for x in arms if x not in runner.SAMPLED_ARMS]
+        sampled = [x for x in arms if x in runner.SAMPLED_ARMS and any(x in row for row in rows.values())]
+        t = {"primary": score.summarise(rows, full, a.resamples), "stability": score.flip_rate(
             [r for r in records if r["task"] == task], question, arms)}
+        if sampled:
+            t["sample"] = {**score.summarise(rows, full + sampled, a.resamples), "of": len(items)}
         for q2 in SECONDARY.get(task, []):
-            t[q2] = score.summarise(score.item_rows(items, records, q2, arms), arms, a.resamples)
+            r2 = score.item_rows(items, records, q2, arms)
+            t[q2] = score.summarise(r2, full, a.resamples)
+            if sampled:
+                t[q2 + "_sample"] = {**score.summarise(r2, full + sampled, a.resamples), "of": len(items)}
         out["tasks"][task] = t
     if "T2" in rows_by_task and "T3" in rows_by_task:
         out["image_effect_T3_minus_T2"] = score.image_effect(rows_by_task["T2"], rows_by_task["T3"], arms, a.resamples)

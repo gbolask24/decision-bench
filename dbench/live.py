@@ -41,10 +41,12 @@ class RunStats:
     (a resumed run retrying a transport error) replaces the earlier one."""
 
     def __init__(self, items_by_task: dict[str, list[Item]], questions: dict[str, str | None], arms: list[str],
-                 repeats: int = 1):
+                 repeats: int = 1, only: dict[str, set[str]] | None = None):
         self.items = {i.id: i for its in items_by_task.values() for i in its}
         self.questions, self.arms = questions, arms
-        self.planned = {(t, a): len(its) * repeats for t, its in items_by_task.items() for a in arms}
+        only = only or {}
+        self.planned = {(t, a): sum(1 for i in its if a not in only or i.id in only[a]) * repeats
+                        for t, its in items_by_task.items() for a in arms}
         self.calls: dict[tuple, dict] = {}
         self.recent: deque = deque(maxlen=KEEP)
         self.errors: deque = deque(maxlen=KEEP)

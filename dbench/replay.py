@@ -7,6 +7,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from .items import Item
+from .run import seeded_order
 
 SCHEMA = "bench-replay/1"
 REQUIRED_META = ("title", "run_date", "commit", "logs_url", "repo_url", "selection_rule")
@@ -43,8 +44,7 @@ def build_race(spec: dict, items: list[Item], records: list[dict], systems: list
     """Each system's logged calls laid end to end in one seeded item order, cut where the race span ends."""
     span = spec["segments"][-1]["to_s"]
     test_items = [i for i in items if i.split == "test"]
-    order = sorted(test_items, key=lambda i: i.id)
-    random.Random(seed).shuffle(order)
+    order = seeded_order(test_items, seed)  # the same order the Opus sample is cut from
     first = _first(records, spec["test"])
     calls = {}
     for s in systems:
@@ -68,7 +68,9 @@ def build_spotlight(spec: dict, items: list[Item], records: list[dict], systems:
                     data_dir: Path, out_dir: Path) -> dict:
     """One image item, drawn by seed from those whose source licence allows reuse; the image is copied out."""
     allowed = set(spec["allowed_licences"])
-    pool = sorted((i for i in items if i.images and spec["licences"].get(i.source.get("task")) in allowed),
+    first = _first(records, spec["test"])
+    answered = lambda i: all((i.id, s["id"]) in first for s in systems)  # Opus answers only its sample
+    pool = sorted((i for i in items if i.images and spec["licences"].get(i.source.get("task")) in allowed and answered(i)),
                   key=lambda i: i.id)
     if not pool:
         raise ReplayError(f"no {spec['test']} image item with an allowed licence")
@@ -109,6 +111,21 @@ def build_totals(items_by_task: dict[str, list[Item]], records: list[dict], syst
     return out
 
 
+def _merged(task: dict) -> dict:
+    """The decision systems from every item, plus each sampled system (Opus) from its sample, with n and of
+    so a reader can scale its totals and must label them."""
+    t = dict(task["primary"])
+    sample = task.get("sample")
+    if not sample:
+        return t
+    extra = [a for a in sample["arms"] if a not in t["arms"]]
+    t["arms"] = {**t["arms"], **{a: sample["arms"][a] for a in extra}}
+    t["pairs"] = {**t.get("pairs", {}), **{k: v for k, v in sample.get("pairs", {}).items()
+                                           if any(a in k.split(" vs ") for a in extra)}}
+    t["sampled"] = {a: {"n": sample["n"], "of": sample["of"]} for a in extra}
+    return t
+
+
 def build_replay(config: dict, items_by_task: dict[str, list[Item]], records: list[dict], summary: dict,
                  data_dir: Path, out_dir: Path) -> dict:
     for field in REQUIRED_META:
@@ -121,7 +138,7 @@ def build_replay(config: dict, items_by_task: dict[str, list[Item]], records: li
     if config.get("spotlight"):
         spec = config["spotlight"]
         spotlight = build_spotlight(spec, items_by_task[spec["test"]], records, systems, seed, data_dir, out_dir)
-    tests = {t: v["primary"] for t, v in summary.get("tasks", {}).items()}
+    tests = {t: _merged(v) for t, v in summary.get("tasks", {}).items()}
     meta = {k: config[k] for k in REQUIRED_META}
     meta.update(tag=config.get("tag", ""), generated_at=datetime.now(timezone.utc).isoformat())
     results = {"tests": tests, "latency": summary.get("latency", {}), "totals": build_totals(items_by_task, records, systems)}

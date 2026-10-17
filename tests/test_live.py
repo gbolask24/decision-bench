@@ -118,13 +118,14 @@ def test_run_command_logs_into_the_run_folder_and_keeps_the_summary(tmp_path, mo
             "--run", "pilot", "--runs-root", str(tmp_path / "runs")]
     assert main(args) == 0
     folder = tmp_path / "runs" / "pilot"
-    assert len((folder / "calls.jsonl").read_text().splitlines()) == 12
+    assert len((folder / "calls.jsonl").read_text().splitlines()) == 8  # Opus gets 1 in 10, rounded up: 1 of 3 per test
     s = json.loads((folder / "summary.json").read_text())
-    assert s["run"]["status"] == "complete" and s["run"]["tasks"] == ["T1", "T4"] and s["done_total"] == 12
+    assert s["run"]["status"] == "complete" and s["run"]["tasks"] == ["T1", "T4"] and s["done_total"] == 8
+    assert {r["arm"]: r["planned"] for r in s["rows"] if r["task"] == "T1"} == {"jev": 3, "opus-low": 1}
     assert {(r["task"], r["arm"], r["pct_right"]) for r in s["rows"]} == {
         (t, a, 1.0) for t in ("T1", "T4") for a in ("jev", "opus-low")}
     assert main(args) == 0  # a second run with the same name resumes: nothing left to call
-    assert len((folder / "calls.jsonl").read_text().splitlines()) == 12
+    assert len((folder / "calls.jsonl").read_text().splitlines()) == 8
     assert json.loads((folder / "run.json").read_text())["resumed"] == 1
 
 

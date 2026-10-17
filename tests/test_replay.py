@@ -170,3 +170,18 @@ def test_totals_count_failed_calls_and_skip_other_splits(tmp_path):
     items = {"T1": t1_items() + [dev], "T5": t5_items(tmp_path)}
     t = build(tmp_path, recs=recs, items=items)["results"]["totals"]["T1"]["jev"]
     assert t["calls"] == 6 and t["elapsed_s"] == 6.0
+
+
+def test_a_sampled_system_is_merged_into_results_with_its_sample_size(tmp_path):
+    s = summary()
+    full = {"accuracy": 0.9, "accuracy_ci": [0.88, 0.92], "cost_per_1000_usd": 0.04, "status_rates": {"ok": 1.0}}
+    opus = {"accuracy": 0.95, "accuracy_ci": [0.9, 0.99], "cost_per_1000_usd": 19.0, "status_rates": {"ok": 1.0}}
+    s["tasks"]["T1"] = {"primary": {"n": 1000, "arms": {"jev": full}, "pairs": {}},
+                        "sample": {"n": 100, "of": 1000, "arms": {"jev": full, "opus-low": opus},
+                                   "pairs": {"jev vs opus-low": {"accuracy_claim": False}}}}
+    r = build_replay(config(), {"T1": t1_items(), "T5": t5_items(tmp_path)}, records(), s, tmp_path, tmp_path / "out")
+    t = r["results"]["tests"]["T1"]
+    assert t["arms"]["opus-low"]["accuracy"] == 0.95 and t["arms"]["jev"] is not None
+    assert t["pairs"]["jev vs opus-low"] == {"accuracy_claim": False}
+    assert t["sampled"] == {"opus-low": {"n": 100, "of": 1000}}
+    assert "sample" not in t

@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 import os
 import random
 import threading
@@ -22,6 +23,8 @@ ARMS = {
     "opus-low": {"system": "opus", "model": "claude-opus-5-5", "effort": "low"},
     "opus-medium": {"system": "opus", "model": "claude-opus-5-5", "effort": "medium"},
 }
+# Pre-registered: Opus runs on a fixed one-in-ten sample of each test, the first tenth in the seeded race order.
+SAMPLED_ARMS = {"opus-low": 0.1, "opus-medium": 0.1}
 RETRYABLE = {408, 409, 425, 429, 500, 502, 503, 504, 529}
 MAX_RETRIES = 3
 TIMEOUT_S = 120
@@ -136,11 +139,40 @@ def _stamp(record: dict, item: Item, mode: str, repeat: int, warmup: bool = Fals
             "split": item.split, "repeat": repeat, "warmup": warmup, **record}
 
 
+def seeded_order(items: list[Item], seed: int = 1017) -> list[Item]:
+    """The order a test's items are raced in: sorted by id, then shuffled by seed."""
+    order = sorted(items, key=lambda i: i.id)
+    random.Random(seed).shuffle(order)
+    return order
+
+
+def arm_subsets(items_by_task: dict[str, list[Item]], seed: int = 1017) -> dict[str, set[str]]:
+    """For each sampled arm, the ids it is sent: the first tenth (rounded up) of each test in the seeded order.
+    T3 takes T2's sampled products (those with an image), so the with-and-without-image comparison stays paired.
+    Pass a whole split per test, so a limited or latency run never reaches beyond the sample."""
+    out = {}
+    for arm, frac in SAMPLED_ARMS.items():
+        ids: set[str] = set()
+        for task, its in items_by_task.items():
+            if task == "T3" and "T2" in items_by_task:
+                continue
+            ids |= {i.id for i in seeded_order(its, seed)[: math.ceil(len(its) * frac)]}
+        if "T3" in items_by_task and "T2" in items_by_task:
+            t3 = {i.id for i in items_by_task["T3"]}
+            ids |= {"T3-" + i[3:] for i in ids if i.startswith("T2-")} & t3
+        out[arm] = ids
+    return out
+
+
+def _allowed(arm: str, item: Item, only: dict[str, set[str]] | None) -> bool:
+    return not only or arm not in only or item.id in only[arm]
+
+
 def run_accuracy(items: list[Item], arms: list[str], data_dir: Path, log: Log, workers: int = 8,
-                 repeats: int = 1, seed: int = 1017, on_record=None) -> int:
+                 repeats: int = 1, seed: int = 1017, on_record=None, only: dict[str, set[str]] | None = None) -> int:
     done = log.done()
     jobs = [(i, a, r) for i in items for a in arms for r in range(repeats)
-            if ("accuracy", i.id, a, r, False) not in done]
+            if ("accuracy", i.id, a, r, False) not in done and _allowed(a, i, only)]
     random.Random(seed).shuffle(jobs)  # interleaves systems so load and time of day fall on all of them
 
     def work(job):
@@ -156,7 +188,7 @@ def run_accuracy(items: list[Item], arms: list[str], data_dir: Path, log: Log, w
 
 
 def run_latency(items: list[Item], arms: list[str], data_dir: Path, log: Log, n: int = 300, warmup: int = 20,
-                window: str = "w1", seed: int = 1017) -> int:
+                window: str = "w1", seed: int = 1017, only: dict[str, set[str]] | None = None) -> int:
     """One request at a time. Each item goes to every arm in a random order, within seconds of each other."""
     rng = random.Random(f"{seed}:{window}")
     pool = rng.sample(items, min(len(items), n + warmup))
@@ -165,6 +197,8 @@ def run_latency(items: list[Item], arms: list[str], data_dir: Path, log: Log, n:
         order = list(arms)
         rng.shuffle(order)
         for arm in order:
+            if not _allowed(arm, item, only):
+                continue
             rec = _stamp(call(arm, item, data_dir), item, "latency", 0, warmup=k < warmup)
             rec["window"] = window
             log.write(rec)
