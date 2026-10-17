@@ -46,6 +46,11 @@ At 1,000 independent items, 80% power, and a correction for three comparisons, t
 
 One run per test. No reruns except the declared repeats and transport-error retries. If a system is unavailable for a whole test, that test is reported without it, with the reason.
 
+## Checks before the tag
+
+- Images: every T3 and T5 image is inside Jev's input limits (each side 280 to 1568 px, docs.typesafe.ai/images). Images outside them were padded with white to 280 px or shrunk to 1568 px, never cropped, by `python -m dbench fit-images` on 17 October 2026: 78 T3 and 54 T5 files (16 of the T5 files were in range but not plain RGB and were flattened onto white). All three systems are sent the same file.
+- Probes on 17 October 2026, one item per test, to check request shapes and parsing (status only; nothing was tuned on them): T1 `T1-00075`, T2 `T2-B01C5YGXB8` and T3 `T3-B01C5YGXB8` (dev), T4 `T4-val-02789` (dev), and T5 `T5-fin-3-cord-test-025`, a test item, because T5 has no dev split. All three systems returned status ok on all five.
+
 ## Deviations
 
 None yet.

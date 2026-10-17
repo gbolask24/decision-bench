@@ -116,3 +116,11 @@ def test_jev_png_assets_say_png_and_refs_are_unique(tmp_path):
     refs = jp["state"]["images"]
     assert len(set(refs)) == 2 and set(refs) == set(jp["assets"])
     assert all(a["format"] == "png" for a in jp["assets"].values())
+
+
+def test_probe_picks_the_first_item_of_the_split_with_an_image_when_asked():
+    from dbench.__main__ import probe_item
+    plain = item()
+    pic = Item("T5-x", "T5", "test", "s", plain.questions, plain.gold, [Image("a.png", "image/png", "h")])
+    assert probe_item([plain, pic], with_images=False) is plain
+    assert probe_item([plain, pic], with_images=True) is pic

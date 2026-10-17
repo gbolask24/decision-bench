@@ -99,9 +99,19 @@ def _items(a, split):
     return its[: a.limit] if getattr(a, "limit", None) else its
 
 
+def probe_item(items: list, with_images: bool):
+    """The item a probe sends: the first one, or the first with an image."""
+    pool = [i for i in items if i.images] if with_images else items
+    if not pool:
+        raise SystemExit("probe: no matching item in that split")
+    return pool[0]
+
+
 def cmd_probe(a):
     load_env()
-    item = _items(a, "dev")[0]
+    # A probe checks request shapes and parsing only; T5 has no dev split, so its probe uses one test item,
+    # whose status is checked and which nothing is tuned on (recorded in PREREGISTRATION.md).
+    item = probe_item(_items(a, a.split), a.with_images)
     for arm in a.arms.split(","):
         rec = runner.call(arm, item, Path(a.data))
         print(json.dumps({k: rec.get(k) for k in ("arm", "status", "http_status", "detail", "model_returned",
@@ -204,6 +214,9 @@ def main(argv=None) -> int:
         p = sub.add_parser(name)
         p.add_argument("--task", required=True, choices=list(TASKS))
         p.add_argument("--arms", default="jev,decisions,opus-low")
+        if name == "probe":
+            p.add_argument("--split", default="dev", choices=["dev", "test"])
+            p.add_argument("--with-images", action="store_true")
         if name == "run":
             p.add_argument("--split", default="test", choices=["test", "dev"])
             p.add_argument("--workers", type=int, default=8)
