@@ -81,8 +81,10 @@ class RunStats:
             per_min = sum(1 for c in cs if c["ts"] >= minute_ago)
             times = [c["elapsed_s"] for c in cs]
             correct = sum(c["correct"] for c in cs)
-            rows.append({"task": task, "arm": arm, "planned": planned, "done": done, "ok": done - sum(failed.values()),
-                         "failed": failed, "correct": correct, "pct_right": correct / done if done else None,
+            ok = done - sum(failed.values())
+            rows.append({"task": task, "arm": arm, "planned": planned, "done": done, "ok": ok,
+                         "failed": failed, "correct": correct, "wrong": ok - correct,
+                         "pct_right": correct / done if done else None, "elapsed_total_s": sum(times),
                          "input_tokens": sum(c["input_tokens"] for c in cs),
                          "output_tokens": sum(c["output_tokens"] for c in cs),
                          "cost_usd": sum(c["cost_usd"] for c in cs), "p50_s": _pct(times, 0.5),
@@ -168,6 +170,7 @@ def phone_rows(root: Path) -> tuple[list[dict], list[dict]]:
             rows.append({"run": m["name"], "task": r["task"], "test": TEST_NAMES.get(r["task"], r["task"]),
                          "arm": r["arm"], "system": SYSTEM_NAMES.get(r["arm"], r["arm"]), "planned": r["planned"],
                          "done": r["done"], "ok": r["ok"], "failed": sum(r["failed"].values()), "correct": r["correct"],
+                         "wrong": r["wrong"], "elapsed_total_s": round(r["elapsed_total_s"], 3),
                          "pct_right": r["pct_right"], "input_tokens": r["input_tokens"],
                          "output_tokens": r["output_tokens"], "cost_usd": round(r["cost_usd"], 6),
                          "p50_s": r["p50_s"], "p95_s": r["p95_s"], "per_min": r["per_min"], "eta_s": r["eta_s"]})

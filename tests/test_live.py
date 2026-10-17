@@ -35,6 +35,9 @@ def test_rows_count_calls_correct_tokens_cost_and_failures():
     r = row(s.summary(), "T1", "jev")
     assert (r["planned"], r["done"], r["ok"], r["correct"]) == (4, 3, 2, 1)
     assert r["pct_right"] == pytest.approx(1 / 3)  # a failed call counts as made, not right
+    assert r["wrong"] == 1  # answered, but not the gold label; right + wrong + errors = done
+    assert r["correct"] + r["wrong"] + sum(r["failed"].values()) == r["done"]
+    assert r["elapsed_total_s"] == pytest.approx(1.6)
     assert r["failed"] == {"http_error": 1}
     assert (r["input_tokens"], r["output_tokens"]) == (300, 15)
     assert r["cost_usd"] == pytest.approx(0.03)
@@ -180,5 +183,6 @@ def test_phone_export_flattens_every_run_into_two_row_files(tmp_path):
     assert runs[0]["input_tokens"] == 200
     r = rows[0]
     assert (r["run"], r["task"], r["arm"], r["system"], r["done"], r["planned"]) == ("pilot", "T1", "jev", "Jev 1.14", 2, 3)
-    assert r["test"] == "Customer-support routing" and r["failed"] == 0
+    assert r["test"] == "Customer-support routing" and r["failed"] == 0 and r["wrong"] == 0
+    assert r["elapsed_total_s"] == pytest.approx(2.0)
 
