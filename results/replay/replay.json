@@ -1,0 +1,3890 @@
+{
+ "schema": "bench-replay/1",
+ "meta": {
+  "title": "Jev 1.14 vs OpenAI Decisions API vs Claude Opus 5.5",
+  "run_date": "2026-10-17",
+  "commit": "03fc011025eb4caf71233fe827fbbbc257a5acfa",
+  "logs_url": "https://github.com/gbolask24/decision-bench/tree/main/public/logs",
+  "repo_url": "https://github.com/gbolask24/decision-bench",
+  "selection_rule": "seeded random order, seed 1017",
+  "tag": "prereg-2026-10-17",
+  "generated_at": "2026-10-17T16:56:31.537747+00:00"
+ },
+ "systems": [
+  {
+   "id": "jev",
+   "name": "Jev 1.14",
+   "model": "jev-1.14.0",
+   "kind": "decision model"
+  },
+  {
+   "id": "decisions",
+   "name": "OpenAI Decisions API",
+   "model": "gpt-6-luna",
+   "kind": "decision API, beta"
+  },
+  {
+   "id": "opus-low",
+   "name": "Claude Opus 5.5",
+   "model": "claude-opus-5-5, low effort",
+   "kind": "general model"
+  }
+ ],
+ "scenes": [
+  {
+   "type": "title",
+   "duration_s": 3
+  },
+  {
+   "type": "race",
+   "race": "t1",
+   "duration_s": "auto"
+  },
+  {
+   "type": "race",
+   "race": "t3",
+   "duration_s": "auto"
+  },
+  {
+   "type": "spotlight",
+   "duration_s": 6
+  },
+  {
+   "type": "results",
+   "duration_s": 18
+  },
+  {
+   "type": "receipt",
+   "duration_s": 3
+  }
+ ],
+ "races": {
+  "t1": {
+   "test": "T1",
+   "label": "Customer-support routing",
+   "n_items": 1000,
+   "show_items": true,
+   "placeholder": "",
+   "segments": [
+    {
+     "from_s": 0,
+     "to_s": 20,
+     "speed": 1
+    }
+   ],
+   "calls": {
+    "jev": [
+     {
+      "item_id": "T1-11543",
+      "started_at": "2026-10-17T16:29:13.690178+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 0.19247983396053314,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "I don't need my damn standard account, I have to remove it"
+     },
+     {
+      "item_id": "T1-11343",
+      "started_at": "2026-10-17T16:28:37.338894+00:00",
+      "start_s": 0.192,
+      "elapsed_s": 0.19798058294691145,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 4.6074000000000006e-05,
+      "text_preview": "I don't make use of my {{Account Type}} account, help to delete it"
+     },
+     {
+      "item_id": "T1-07603",
+      "started_at": "2026-10-17T16:28:28.739928+00:00",
+      "start_s": 0.39,
+      "elapsed_s": 0.3508095829747617,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "i want help to file a customer complaint against ur business"
+     },
+     {
+      "item_id": "T1-23173",
+      "started_at": "2026-10-17T16:24:49.980075+00:00",
+      "start_s": 0.741,
+      "elapsed_s": 0.19354191608726978,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": false,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "submitting differemt shipping address"
+     },
+     {
+      "item_id": "T1-25054",
+      "started_at": "2026-10-17T16:36:44.108548+00:00",
+      "start_s": 0.935,
+      "elapsed_s": 0.2998828748241067,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 4.5612e-05,
+      "text_preview": "purchase {{Order Number}} status"
+     },
+     {
+      "item_id": "T1-10876",
+      "started_at": "2026-10-17T16:27:49.811710+00:00",
+      "start_s": 1.235,
+      "elapsed_s": 0.32750491704791784,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 4.557e-05,
+      "text_preview": "question about opening standard accounts"
+     },
+     {
+      "item_id": "T1-15504",
+      "started_at": "2026-10-17T16:27:28.697693+00:00",
+      "start_s": 1.562,
+      "elapsed_s": 0.3339712908491492,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "can you send me my damn invoice from {{Person Name}}?"
+     },
+     {
+      "item_id": "T1-21564",
+      "started_at": "2026-10-17T16:28:04.140251+00:00",
+      "start_s": 1.896,
+      "elapsed_s": 0.30648525012657046,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "help me to informof an issue with a registration"
+     },
+     {
+      "item_id": "T1-05060",
+      "started_at": "2026-10-17T16:34:01.005793+00:00",
+      "start_s": 2.203,
+      "elapsed_s": 0.18761745910160244,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "how do I sere the payment modalities?"
+     },
+     {
+      "item_id": "T1-03720",
+      "started_at": "2026-10-17T16:35:54.795697+00:00",
+      "start_s": 2.39,
+      "elapsed_s": 0.20236362516880035,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "I want to check the termination penalty, help me"
+     },
+     {
+      "item_id": "T1-14932",
+      "started_at": "2026-10-17T16:36:26.942686+00:00",
+      "start_s": 2.593,
+      "elapsed_s": 0.20789974997751415,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "I want to download the damn invoices from {{Person Name}}"
+     },
+     {
+      "item_id": "T1-13966",
+      "started_at": "2026-10-17T16:32:36.046449+00:00",
+      "start_s": 2.801,
+      "elapsed_s": 0.2059268329758197,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 4.5612e-05,
+      "text_preview": "correct information on freeaccount"
+     },
+     {
+      "item_id": "T1-21304",
+      "started_at": "2026-10-17T16:30:18.203316+00:00",
+      "start_s": 3.006,
+      "elapsed_s": 0.19270604220218956,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "i want help to inform of a problem with registrations"
+     },
+     {
+      "item_id": "T1-06100",
+      "started_at": "2026-10-17T16:25:04.751848+00:00",
+      "start_s": 3.199,
+      "elapsed_s": 0.20862754178233445,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "I wwould like to see your damn money back policy, help me"
+     },
+     {
+      "item_id": "T1-11788",
+      "started_at": "2026-10-17T16:23:35.477248+00:00",
+      "start_s": 3.408,
+      "elapsed_s": 0.19399024988524616,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "i dont know how i can delete a premium account"
+     },
+     {
+      "item_id": "T1-24923",
+      "started_at": "2026-10-17T16:32:44.443229+00:00",
+      "start_s": 3.602,
+      "elapsed_s": 0.2171474581118673,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 4.5612e-05,
+      "text_preview": "order {{Order Number}} status"
+     },
+     {
+      "item_id": "T1-07583",
+      "started_at": "2026-10-17T16:24:02.217084+00:00",
+      "start_s": 3.819,
+      "elapsed_s": 0.1911582499742508,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 4.557e-05,
+      "text_preview": "making claim against ur company"
+     },
+     {
+      "item_id": "T1-03659",
+      "started_at": "2026-10-17T16:34:06.897344+00:00",
+      "start_s": 4.01,
+      "elapsed_s": 0.20896425005048513,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "how do I see the early exit fee?"
+     },
+     {
+      "item_id": "T1-11789",
+      "started_at": "2026-10-17T16:23:09.856656+00:00",
+      "start_s": 4.219,
+      "elapsed_s": 0.19261779193766415,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 4.552800000000001e-05,
+      "text_preview": "removing standard account"
+     },
+     {
+      "item_id": "T1-26640",
+      "started_at": "2026-10-17T16:33:46.943269+00:00",
+      "start_s": 4.412,
+      "elapsed_s": 0.20481354207731783,
+      "status": "ok",
+      "label": "track_refund",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "help checking the current status of the restitution"
+     },
+     {
+      "item_id": "T1-09697",
+      "started_at": "2026-10-17T16:33:42.943409+00:00",
+      "start_s": 4.616,
+      "elapsed_s": 0.22008366603404284,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "how can i speak with an assistznt"
+     },
+     {
+      "item_id": "T1-04051",
+      "started_at": "2026-10-17T16:30:24.474247+00:00",
+      "start_s": 4.837,
+      "elapsed_s": 0.2282861249987036,
+      "status": "ok",
+      "label": "check_invoice",
+      "correct": true,
+      "cost_usd": 4.6074000000000006e-05,
+      "text_preview": "I don't know what to do to find the invoice #37777"
+     },
+     {
+      "item_id": "T1-24147",
+      "started_at": "2026-10-17T16:24:28.447695+00:00",
+      "start_s": 5.065,
+      "elapsed_s": 0.21695587504655123,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "I cannot switch to the {{Account Type}} account"
+     },
+     {
+      "item_id": "T1-13425",
+      "started_at": "2026-10-17T16:23:09.012066+00:00",
+      "start_s": 5.282,
+      "elapsed_s": 0.3143718331120908,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "want assistance checking ohw soon can i expect my parcel"
+     },
+     {
+      "item_id": "T1-03118",
+      "started_at": "2026-10-17T16:36:30.138270+00:00",
+      "start_s": 5.596,
+      "elapsed_s": 0.30376670812256634,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "I need to check the early termination fee"
+     },
+     {
+      "item_id": "T1-09832",
+      "started_at": "2026-10-17T16:24:03.274895+00:00",
+      "start_s": 5.9,
+      "elapsed_s": 0.21610691584646702,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 4.5654e-05,
+      "text_preview": "I need help speaking to a person"
+     },
+     {
+      "item_id": "T1-05707",
+      "started_at": "2026-10-17T16:26:43.857854+00:00",
+      "start_s": 6.116,
+      "elapsed_s": 0.20278920815326273,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "is it possible to see your payment options?"
+     },
+     {
+      "item_id": "T1-14130",
+      "started_at": "2026-10-17T16:23:52.256057+00:00",
+      "start_s": 6.319,
+      "elapsed_s": 0.2136027910746634,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "i want help editing the info on my user profile"
+     },
+     {
+      "item_id": "T1-06511",
+      "started_at": "2026-10-17T16:24:16.396817+00:00",
+      "start_s": 6.532,
+      "elapsed_s": 0.20643991697579622,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "can you show me in which cases can I request a refund?"
+     },
+     {
+      "item_id": "T1-18264",
+      "started_at": "2026-10-17T16:23:56.452519+00:00",
+      "start_s": 6.739,
+      "elapsed_s": 0.1897834159899503,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "I do not know how to inform of errors with online payments"
+     },
+     {
+      "item_id": "T1-25688",
+      "started_at": "2026-10-17T16:30:26.756405+00:00",
+      "start_s": 6.929,
+      "elapsed_s": 0.307595708174631,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "how to check purchase {{Order Number}} status?"
+     },
+     {
+      "item_id": "T1-14176",
+      "started_at": "2026-10-17T16:34:28.343667+00:00",
+      "start_s": 7.236,
+      "elapsed_s": 0.18940241704694927,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "need to modify the user info help me"
+     },
+     {
+      "item_id": "T1-19385",
+      "started_at": "2026-10-17T16:24:55.173965+00:00",
+      "start_s": 7.426,
+      "elapsed_s": 0.19111487502232194,
+      "status": "ok",
+      "label": "place_order",
+      "correct": true,
+      "cost_usd": 4.557e-05,
+      "text_preview": "help me shop an item"
+     },
+     {
+      "item_id": "T1-24273",
+      "started_at": "2026-10-17T16:24:59.467751+00:00",
+      "start_s": 7.617,
+      "elapsed_s": 0.21537895896472037,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "can I change to the platinum account?"
+     },
+     {
+      "item_id": "T1-22926",
+      "started_at": "2026-10-17T16:36:16.600779+00:00",
+      "start_s": 7.832,
+      "elapsed_s": 0.4223809167742729,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": false,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "I have troubles entering a different shipping address"
+     },
+     {
+      "item_id": "T1-09041",
+      "started_at": "2026-10-17T16:36:32.810639+00:00",
+      "start_s": 8.255,
+      "elapsed_s": 0.22658170806244016,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 4.5654e-05,
+      "text_preview": "i have to contact a human agent"
+     },
+     {
+      "item_id": "T1-23172",
+      "started_at": "2026-10-17T16:24:55.956016+00:00",
+      "start_s": 8.481,
+      "elapsed_s": 0.26337070809677243,
+      "status": "ok",
+      "label": "set_up_shipping_address",
+      "correct": true,
+      "cost_usd": 4.5612e-05,
+      "text_preview": "issue setting up another delivery address"
+     },
+     {
+      "item_id": "T1-00038",
+      "started_at": "2026-10-17T16:25:02.375300+00:00",
+      "start_s": 8.745,
+      "elapsed_s": 0.22098449990153313,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "I would like to cancel purchase {{Order Number}}"
+     },
+     {
+      "item_id": "T1-12272",
+      "started_at": "2026-10-17T16:25:05.668284+00:00",
+      "start_s": 8.965,
+      "elapsed_s": 0.18824295792728662,
+      "status": "ok",
+      "label": "delivery_options",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "do you deliver to {{Delivery Country}}?"
+     },
+     {
+      "item_id": "T1-19103",
+      "started_at": "2026-10-17T16:27:09.631183+00:00",
+      "start_s": 9.154,
+      "elapsed_s": 0.2887295000255108,
+      "status": "ok",
+      "label": "place_order",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "I do not know what to do to earn some products"
+     },
+     {
+      "item_id": "T1-05044",
+      "started_at": "2026-10-17T16:35:48.777779+00:00",
+      "start_s": 9.442,
+      "elapsed_s": 0.21639125002548099,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "i have got to check the available payment options"
+     },
+     {
+      "item_id": "T1-22300",
+      "started_at": "2026-10-17T16:35:44.097881+00:00",
+      "start_s": 9.659,
+      "elapsed_s": 0.21379416692070663,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "I need hdlp to submit my feedback for a product"
+     },
+     {
+      "item_id": "T1-12372",
+      "started_at": "2026-10-17T16:29:13.034811+00:00",
+      "start_s": 9.873,
+      "elapsed_s": 0.326083708088845,
+      "status": "ok",
+      "label": "delivery_options",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "I want to see the shipping methods, how do I do it?"
+     },
+     {
+      "item_id": "T1-05209",
+      "started_at": "2026-10-17T16:24:46.974490+00:00",
+      "start_s": 10.199,
+      "elapsed_s": 0.21379754086956382,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "where to check what payment options you accept?"
+     },
+     {
+      "item_id": "T1-21476",
+      "started_at": "2026-10-17T16:29:11.879309+00:00",
+      "start_s": 10.413,
+      "elapsed_s": 0.31560408417135477,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "i need help to notify of sign-up problems"
+     },
+     {
+      "item_id": "T1-18233",
+      "started_at": "2026-10-17T16:31:50.666660+00:00",
+      "start_s": 10.728,
+      "elapsed_s": 0.2871798330452293,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "where to notify of problems with online payments?"
+     },
+     {
+      "item_id": "T1-00152",
+      "started_at": "2026-10-17T16:25:04.986731+00:00",
+      "start_s": 11.015,
+      "elapsed_s": 0.19419929198920727,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "I don't want purchase {{Order Number}}"
+     },
+     {
+      "item_id": "T1-21801",
+      "started_at": "2026-10-17T16:32:51.641504+00:00",
+      "start_s": 11.21,
+      "elapsed_s": 0.1868569168727845,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "help me to report an issue with a sign-up"
+     },
+     {
+      "item_id": "T1-02889",
+      "started_at": "2026-10-17T16:24:44.384078+00:00",
+      "start_s": 11.396,
+      "elapsed_s": 0.19279462494887412,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "I do not know what to do to edit the shipping address"
+     },
+     {
+      "item_id": "T1-07038",
+      "started_at": "2026-10-17T16:28:10.754487+00:00",
+      "start_s": 11.589,
+      "elapsed_s": 0.18579354183748364,
+      "status": "ok",
+      "label": "get_refund",
+      "correct": false,
+      "cost_usd": 4.5654e-05,
+      "text_preview": "I try to file a claim"
+     },
+     {
+      "item_id": "T1-18227",
+      "started_at": "2026-10-17T16:30:52.480265+00:00",
+      "start_s": 11.775,
+      "elapsed_s": 0.27404620917513967,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "I can't pay, I need help to inform of problems with payment"
+     },
+     {
+      "item_id": "T1-09907",
+      "started_at": "2026-10-17T16:36:51.426878+00:00",
+      "start_s": 12.049,
+      "elapsed_s": 0.2260512919165194,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "I want help to talk to a person"
+     },
+     {
+      "item_id": "T1-14864",
+      "started_at": "2026-10-17T16:26:22.213657+00:00",
+      "start_s": 12.275,
+      "elapsed_s": 0.23483841703273356,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": false,
+      "cost_usd": 4.557e-05,
+      "text_preview": "pudate standard account"
+     },
+     {
+      "item_id": "T1-25693",
+      "started_at": "2026-10-17T16:30:03.224217+00:00",
+      "start_s": 12.51,
+      "elapsed_s": 0.27370662498287857,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": false,
+      "cost_usd": 4.6032e-05,
+      "text_preview": "is it possible to see thew ETA of the purchase {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-06314",
+      "started_at": "2026-10-17T16:30:02.956846+00:00",
+      "start_s": 12.784,
+      "elapsed_s": 0.208513000048697,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "need to check ur money back ugarantee"
+     },
+     {
+      "item_id": "T1-07082",
+      "started_at": "2026-10-17T16:27:34.880904+00:00",
+      "start_s": 12.992,
+      "elapsed_s": 0.20733637479133904,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "ido not know how i could file a consumer claim"
+     },
+     {
+      "item_id": "T1-10435",
+      "started_at": "2026-10-17T16:32:20.888692+00:00",
+      "start_s": 13.199,
+      "elapsed_s": 0.18962983298115432,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "create {{Account Type}} account for wife"
+     },
+     {
+      "item_id": "T1-01734",
+      "started_at": "2026-10-17T16:34:07.832718+00:00",
+      "start_s": 13.389,
+      "elapsed_s": 0.2011667089536786,
+      "status": "ok",
+      "label": "change_order",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "how can I swap a product of order {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-13787",
+      "started_at": "2026-10-17T16:25:33.973316+00:00",
+      "start_s": 13.59,
+      "elapsed_s": 0.2207460419740528,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "wanna check how long it takes for my delivery to arrive"
+     },
+     {
+      "item_id": "T1-08266",
+      "started_at": "2026-10-17T16:35:25.493643+00:00",
+      "start_s": 13.811,
+      "elapsed_s": 0.2140620411373675,
+      "status": "ok",
+      "label": "contact_customer_service",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "assistance to see what hours i can call customer service"
+     },
+     {
+      "item_id": "T1-18245",
+      "started_at": "2026-10-17T16:33:26.085585+00:00",
+      "start_s": 14.025,
+      "elapsed_s": 0.19551854208111763,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "I have got to report a trouble with online payment"
+     },
+     {
+      "item_id": "T1-25578",
+      "started_at": "2026-10-17T16:26:18.824382+00:00",
+      "start_s": 14.221,
+      "elapsed_s": 0.25499862479045987,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "I'm trying to see purchase {{Order Number}} current status"
+     },
+     {
+      "item_id": "T1-00225",
+      "started_at": "2026-10-17T16:33:25.437429+00:00",
+      "start_s": 14.476,
+      "elapsed_s": 0.207064000191167,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "can you help me cancelling order {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-20172",
+      "started_at": "2026-10-17T16:29:17.175265+00:00",
+      "start_s": 14.683,
+      "elapsed_s": 0.2680817919317633,
+      "status": "ok",
+      "label": "recover_password",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "is it possible to reset the keyof my user account"
+     },
+     {
+      "item_id": "T1-04787",
+      "started_at": "2026-10-17T16:28:20.918241+00:00",
+      "start_s": 14.951,
+      "elapsed_s": 0.205849832855165,
+      "status": "ok",
+      "label": "check_invoice",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "can you help me seeing the invoice #00108?"
+     },
+     {
+      "item_id": "T1-16494",
+      "started_at": "2026-10-17T16:34:24.630996+00:00",
+      "start_s": 15.157,
+      "elapsed_s": 0.18886112491600215,
+      "status": "ok",
+      "label": "track_refund",
+      "correct": false,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "when am i gonna obtain a reimbursement of money"
+     },
+     {
+      "item_id": "T1-22779",
+      "started_at": "2026-10-17T16:28:04.240847+00:00",
+      "start_s": 15.345,
+      "elapsed_s": 0.20862854202277958,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "how to sedn feedback about a service?"
+     },
+     {
+      "item_id": "T1-10580",
+      "started_at": "2026-10-17T16:33:43.426263+00:00",
+      "start_s": 15.554,
+      "elapsed_s": 0.2548663329798728,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "can I open a {{Account Type}} account for my daughter?"
+     },
+     {
+      "item_id": "T1-15360",
+      "started_at": "2026-10-17T16:23:26.346352+00:00",
+      "start_s": 15.809,
+      "elapsed_s": 0.21828104089945555,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 4.5738e-05,
+      "text_preview": "mail me my invoices from {{Person Name}}"
+     },
+     {
+      "item_id": "T1-03811",
+      "started_at": "2026-10-17T16:36:20.580702+00:00",
+      "start_s": 16.027,
+      "elapsed_s": 0.20368358399719,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "how do I check the termination penalties ?"
+     },
+     {
+      "item_id": "T1-02606",
+      "started_at": "2026-10-17T16:30:57.727749+00:00",
+      "start_s": 16.231,
+      "elapsed_s": 0.2691363338381052,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "I have troubles trying to update the address"
+     },
+     {
+      "item_id": "T1-13911",
+      "started_at": "2026-10-17T16:24:27.921204+00:00",
+      "start_s": 16.5,
+      "elapsed_s": 0.21669291681610048,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "modifying {{Account Category}} account"
+     },
+     {
+      "item_id": "T1-21952",
+      "started_at": "2026-10-17T16:33:22.481263+00:00",
+      "start_s": 16.717,
+      "elapsed_s": 0.22968304180540144,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "i do not know how i could leave some feedback for a product"
+     },
+     {
+      "item_id": "T1-16199",
+      "started_at": "2026-10-17T16:34:25.634009+00:00",
+      "start_s": 16.946,
+      "elapsed_s": 0.19012891710735857,
+      "status": "ok",
+      "label": "get_refund",
+      "correct": true,
+      "cost_usd": 4.578e-05,
+      "text_preview": "want help obtaining reimbursements ofmy money"
+     },
+     {
+      "item_id": "T1-13771",
+      "started_at": "2026-10-17T16:29:48.665607+00:00",
+      "start_s": 17.137,
+      "elapsed_s": 0.25451537501066923,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 4.5948e-05,
+      "text_preview": "can you show me how long it takes for the article to arrive?"
+     },
+     {
+      "item_id": "T1-18606",
+      "started_at": "2026-10-17T16:31:28.174689+00:00",
+      "start_s": 17.391,
+      "elapsed_s": 0.24059712490998209,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.5696000000000004e-05,
+      "text_preview": "i have to notify of problems with payments"
+     },
+     {
+      "item_id": "T1-13906",
+      "started_at": "2026-10-17T16:24:56.763879+00:00",
+      "start_s": 17.632,
+      "elapsed_s": 0.20363429188728333,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 4.557e-05,
+      "text_preview": "update info on pro account"
+     },
+     {
+      "item_id": "T1-24291",
+      "started_at": "2026-10-17T16:29:31.487960+00:00",
+      "start_s": 17.835,
+      "elapsed_s": 0.22049345797859132,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "what do I have to do to use the standard account?"
+     },
+     {
+      "item_id": "T1-18531",
+      "started_at": "2026-10-17T16:35:17.590580+00:00",
+      "start_s": 18.056,
+      "elapsed_s": 0.20778387505561113,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "my card did not work, help to inform of payment issues"
+     },
+     {
+      "item_id": "T1-09946",
+      "started_at": "2026-10-17T16:23:45.648217+00:00",
+      "start_s": 18.264,
+      "elapsed_s": 0.19898187485523522,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 4.5990000000000005e-05,
+      "text_preview": "can I create a different bloody {{Account Type}} account for my father?"
+     },
+     {
+      "item_id": "T1-06588",
+      "started_at": "2026-10-17T16:34:57.098004+00:00",
+      "start_s": 18.463,
+      "elapsed_s": 0.1957131668459624,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 4.586400000000001e-05,
+      "text_preview": "help to check in what cases can I ask for a reimbursement"
+     },
+     {
+      "item_id": "T1-13209",
+      "started_at": "2026-10-17T16:32:01.530828+00:00",
+      "start_s": 18.658,
+      "elapsed_s": 0.19798579206690192,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "is it possible to see when my product is going to arrive?"
+     },
+     {
+      "item_id": "T1-01918",
+      "started_at": "2026-10-17T16:36:15.839587+00:00",
+      "start_s": 18.856,
+      "elapsed_s": 0.6754939157981426,
+      "status": "ok",
+      "label": "change_order",
+      "correct": true,
+      "cost_usd": 4.5906000000000004e-05,
+      "text_preview": "i need assistance to delete a product from order {{Order Number}}"
+     },
+     {
+      "item_id": "T1-07527",
+      "started_at": "2026-10-17T16:36:42.018504+00:00",
+      "start_s": 19.532,
+      "elapsed_s": 0.22230875003151596,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 4.5822e-05,
+      "text_preview": "where to make a relcamation against your company?"
+     },
+     {
+      "item_id": "T1-02581",
+      "started_at": "2026-10-17T16:27:24.080927+00:00",
+      "start_s": 19.754,
+      "elapsed_s": 1.3953924998641014,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": true,
+      "cost_usd": 4.5654e-05,
+      "text_preview": "I need assistance correcting my shipping address"
+     }
+    ],
+    "decisions": [
+     {
+      "item_id": "T1-11543",
+      "started_at": "2026-10-17T16:34:17.275839+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 0.21925004199147224,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "I don't need my damn standard account, I have to remove it"
+     },
+     {
+      "item_id": "T1-11343",
+      "started_at": "2026-10-17T16:35:14.137715+00:00",
+      "start_s": 0.219,
+      "elapsed_s": 0.12613520910963416,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 7.410000000000001e-05,
+      "text_preview": "I don't make use of my {{Account Type}} account, help to delete it"
+     },
+     {
+      "item_id": "T1-07603",
+      "started_at": "2026-10-17T16:33:24.098330+00:00",
+      "start_s": 0.345,
+      "elapsed_s": 0.24679000000469387,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "i want help to file a customer complaint against ur business"
+     },
+     {
+      "item_id": "T1-23173",
+      "started_at": "2026-10-17T16:24:03.412851+00:00",
+      "start_s": 0.592,
+      "elapsed_s": 0.3733070830348879,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": false,
+      "cost_usd": 7.310000000000002e-05,
+      "text_preview": "submitting differemt shipping address"
+     },
+     {
+      "item_id": "T1-25054",
+      "started_at": "2026-10-17T16:27:46.277956+00:00",
+      "start_s": 0.965,
+      "elapsed_s": 0.3451254579704255,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 7.310000000000002e-05,
+      "text_preview": "purchase {{Order Number}} status"
+     },
+     {
+      "item_id": "T1-10876",
+      "started_at": "2026-10-17T16:35:44.558373+00:00",
+      "start_s": 1.311,
+      "elapsed_s": 0.25457808398641646,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 7.3e-05,
+      "text_preview": "question about opening standard accounts"
+     },
+     {
+      "item_id": "T1-15504",
+      "started_at": "2026-10-17T16:26:51.362868+00:00",
+      "start_s": 1.565,
+      "elapsed_s": 0.224898291984573,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "can you send me my damn invoice from {{Person Name}}?"
+     },
+     {
+      "item_id": "T1-21564",
+      "started_at": "2026-10-17T16:31:53.124211+00:00",
+      "start_s": 1.79,
+      "elapsed_s": 0.4524711249396205,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "help me to informof an issue with a registration"
+     },
+     {
+      "item_id": "T1-05060",
+      "started_at": "2026-10-17T16:24:37.351894+00:00",
+      "start_s": 2.243,
+      "elapsed_s": 0.14119595801457763,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "how do I sere the payment modalities?"
+     },
+     {
+      "item_id": "T1-03720",
+      "started_at": "2026-10-17T16:33:39.226552+00:00",
+      "start_s": 2.384,
+      "elapsed_s": 0.2627033330500126,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "I want to check the termination penalty, help me"
+     },
+     {
+      "item_id": "T1-14932",
+      "started_at": "2026-10-17T16:27:59.237212+00:00",
+      "start_s": 2.646,
+      "elapsed_s": 0.23335854220204055,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "I want to download the damn invoices from {{Person Name}}"
+     },
+     {
+      "item_id": "T1-13966",
+      "started_at": "2026-10-17T16:31:56.199429+00:00",
+      "start_s": 2.88,
+      "elapsed_s": 0.2146026249974966,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 7.3e-05,
+      "text_preview": "correct information on freeaccount"
+     },
+     {
+      "item_id": "T1-21304",
+      "started_at": "2026-10-17T16:24:05.889005+00:00",
+      "start_s": 3.094,
+      "elapsed_s": 0.26099300011992455,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "i want help to inform of a problem with registrations"
+     },
+     {
+      "item_id": "T1-06100",
+      "started_at": "2026-10-17T16:31:22.120116+00:00",
+      "start_s": 3.355,
+      "elapsed_s": 0.11503020813688636,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 7.390000000000001e-05,
+      "text_preview": "I wwould like to see your damn money back policy, help me"
+     },
+     {
+      "item_id": "T1-11788",
+      "started_at": "2026-10-17T16:33:00.161958+00:00",
+      "start_s": 3.47,
+      "elapsed_s": 0.2586542081553489,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "i dont know how i can delete a premium account"
+     },
+     {
+      "item_id": "T1-24923",
+      "started_at": "2026-10-17T16:36:29.634051+00:00",
+      "start_s": 3.729,
+      "elapsed_s": 0.3123911670409143,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 7.310000000000002e-05,
+      "text_preview": "order {{Order Number}} status"
+     },
+     {
+      "item_id": "T1-07583",
+      "started_at": "2026-10-17T16:23:25.535277+00:00",
+      "start_s": 4.041,
+      "elapsed_s": 0.12857987498864532,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 7.3e-05,
+      "text_preview": "making claim against ur company"
+     },
+     {
+      "item_id": "T1-03659",
+      "started_at": "2026-10-17T16:35:49.847176+00:00",
+      "start_s": 4.17,
+      "elapsed_s": 0.3092127088457346,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "how do I see the early exit fee?"
+     },
+     {
+      "item_id": "T1-11789",
+      "started_at": "2026-10-17T16:30:01.381710+00:00",
+      "start_s": 4.479,
+      "elapsed_s": 0.22119162511080503,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 7.290000000000001e-05,
+      "text_preview": "removing standard account"
+     },
+     {
+      "item_id": "T1-26640",
+      "started_at": "2026-10-17T16:34:42.426210+00:00",
+      "start_s": 4.7,
+      "elapsed_s": 0.24030866706743836,
+      "status": "ok",
+      "label": "track_refund",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "help checking the current status of the restitution"
+     },
+     {
+      "item_id": "T1-09697",
+      "started_at": "2026-10-17T16:31:43.885763+00:00",
+      "start_s": 4.941,
+      "elapsed_s": 0.15343791712075472,
+      "status": "ok",
+      "label": "contact_customer_service",
+      "correct": false,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "how can i speak with an assistznt"
+     },
+     {
+      "item_id": "T1-04051",
+      "started_at": "2026-10-17T16:33:44.434016+00:00",
+      "start_s": 5.094,
+      "elapsed_s": 0.29590683290734887,
+      "status": "ok",
+      "label": "check_invoice",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "I don't know what to do to find the invoice #37777"
+     },
+     {
+      "item_id": "T1-24147",
+      "started_at": "2026-10-17T16:30:26.936238+00:00",
+      "start_s": 5.39,
+      "elapsed_s": 0.26004070905037224,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "I cannot switch to the {{Account Type}} account"
+     },
+     {
+      "item_id": "T1-13425",
+      "started_at": "2026-10-17T16:27:49.503817+00:00",
+      "start_s": 5.65,
+      "elapsed_s": 0.2800812078639865,
+      "status": "ok",
+      "label": "track_order",
+      "correct": false,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "want assistance checking ohw soon can i expect my parcel"
+     },
+     {
+      "item_id": "T1-03118",
+      "started_at": "2026-10-17T16:32:42.155469+00:00",
+      "start_s": 5.93,
+      "elapsed_s": 0.18362595792859793,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "I need to check the early termination fee"
+     },
+     {
+      "item_id": "T1-09832",
+      "started_at": "2026-10-17T16:25:25.269206+00:00",
+      "start_s": 6.114,
+      "elapsed_s": 0.31151166604831815,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 7.32e-05,
+      "text_preview": "I need help speaking to a person"
+     },
+     {
+      "item_id": "T1-05707",
+      "started_at": "2026-10-17T16:36:36.754650+00:00",
+      "start_s": 6.425,
+      "elapsed_s": 0.2853059160988778,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "is it possible to see your payment options?"
+     },
+     {
+      "item_id": "T1-14130",
+      "started_at": "2026-10-17T16:23:18.701087+00:00",
+      "start_s": 6.711,
+      "elapsed_s": 0.26556487497873604,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "i want help editing the info on my user profile"
+     },
+     {
+      "item_id": "T1-06511",
+      "started_at": "2026-10-17T16:33:03.725343+00:00",
+      "start_s": 6.976,
+      "elapsed_s": 0.2425383331719786,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "can you show me in which cases can I request a refund?"
+     },
+     {
+      "item_id": "T1-18264",
+      "started_at": "2026-10-17T16:36:34.398734+00:00",
+      "start_s": 7.219,
+      "elapsed_s": 0.2133115001488477,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "I do not know how to inform of errors with online payments"
+     },
+     {
+      "item_id": "T1-25688",
+      "started_at": "2026-10-17T16:28:52.717071+00:00",
+      "start_s": 7.432,
+      "elapsed_s": 0.21302858414128423,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "how to check purchase {{Order Number}} status?"
+     },
+     {
+      "item_id": "T1-14176",
+      "started_at": "2026-10-17T16:30:59.110180+00:00",
+      "start_s": 7.645,
+      "elapsed_s": 0.22184891696088016,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "need to modify the user info help me"
+     },
+     {
+      "item_id": "T1-19385",
+      "started_at": "2026-10-17T16:32:53.081512+00:00",
+      "start_s": 7.867,
+      "elapsed_s": 0.27343866718001664,
+      "status": "ok",
+      "label": "place_order",
+      "correct": true,
+      "cost_usd": 7.3e-05,
+      "text_preview": "help me shop an item"
+     },
+     {
+      "item_id": "T1-24273",
+      "started_at": "2026-10-17T16:26:29.372178+00:00",
+      "start_s": 8.14,
+      "elapsed_s": 0.25235454202629626,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "can I change to the platinum account?"
+     },
+     {
+      "item_id": "T1-22926",
+      "started_at": "2026-10-17T16:31:23.869734+00:00",
+      "start_s": 8.393,
+      "elapsed_s": 0.34478383394889534,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": false,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "I have troubles entering a different shipping address"
+     },
+     {
+      "item_id": "T1-09041",
+      "started_at": "2026-10-17T16:35:11.064680+00:00",
+      "start_s": 8.738,
+      "elapsed_s": 0.30843208311125636,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 7.32e-05,
+      "text_preview": "i have to contact a human agent"
+     },
+     {
+      "item_id": "T1-23172",
+      "started_at": "2026-10-17T16:33:11.704658+00:00",
+      "start_s": 9.046,
+      "elapsed_s": 0.27356379199773073,
+      "status": "ok",
+      "label": "set_up_shipping_address",
+      "correct": true,
+      "cost_usd": 7.310000000000002e-05,
+      "text_preview": "issue setting up another delivery address"
+     },
+     {
+      "item_id": "T1-00038",
+      "started_at": "2026-10-17T16:26:19.065003+00:00",
+      "start_s": 9.32,
+      "elapsed_s": 0.1351664171088487,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "I would like to cancel purchase {{Order Number}}"
+     },
+     {
+      "item_id": "T1-12272",
+      "started_at": "2026-10-17T16:34:13.691676+00:00",
+      "start_s": 9.455,
+      "elapsed_s": 0.12576691713184118,
+      "status": "ok",
+      "label": "delivery_options",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "do you deliver to {{Delivery Country}}?"
+     },
+     {
+      "item_id": "T1-19103",
+      "started_at": "2026-10-17T16:35:00.990660+00:00",
+      "start_s": 9.58,
+      "elapsed_s": 0.2909536249935627,
+      "status": "ok",
+      "label": "place_order",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "I do not know what to do to earn some products"
+     },
+     {
+      "item_id": "T1-05044",
+      "started_at": "2026-10-17T16:27:25.265214+00:00",
+      "start_s": 9.871,
+      "elapsed_s": 0.2767269581090659,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "i have got to check the available payment options"
+     },
+     {
+      "item_id": "T1-22300",
+      "started_at": "2026-10-17T16:28:18.215767+00:00",
+      "start_s": 10.148,
+      "elapsed_s": 0.27917733299545944,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "I need hdlp to submit my feedback for a product"
+     },
+     {
+      "item_id": "T1-12372",
+      "started_at": "2026-10-17T16:24:58.334750+00:00",
+      "start_s": 10.427,
+      "elapsed_s": 0.26224600011482835,
+      "status": "ok",
+      "label": "delivery_options",
+      "correct": true,
+      "cost_usd": 7.390000000000001e-05,
+      "text_preview": "I want to see the shipping methods, how do I do it?"
+     },
+     {
+      "item_id": "T1-05209",
+      "started_at": "2026-10-17T16:27:22.233231+00:00",
+      "start_s": 10.69,
+      "elapsed_s": 0.2702437089756131,
+      "status": "ok",
+      "label": "check_payment_methods",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "where to check what payment options you accept?"
+     },
+     {
+      "item_id": "T1-21476",
+      "started_at": "2026-10-17T16:25:09.604702+00:00",
+      "start_s": 10.96,
+      "elapsed_s": 0.24829887505620718,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "i need help to notify of sign-up problems"
+     },
+     {
+      "item_id": "T1-18233",
+      "started_at": "2026-10-17T16:32:53.351772+00:00",
+      "start_s": 11.208,
+      "elapsed_s": 0.26776925008744,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "where to notify of problems with online payments?"
+     },
+     {
+      "item_id": "T1-00152",
+      "started_at": "2026-10-17T16:30:54.348337+00:00",
+      "start_s": 11.476,
+      "elapsed_s": 0.24536483292467892,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "I don't want purchase {{Order Number}}"
+     },
+     {
+      "item_id": "T1-21801",
+      "started_at": "2026-10-17T16:27:13.806176+00:00",
+      "start_s": 11.721,
+      "elapsed_s": 0.30967149999924004,
+      "status": "ok",
+      "label": "registration_problems",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "help me to report an issue with a sign-up"
+     },
+     {
+      "item_id": "T1-02889",
+      "started_at": "2026-10-17T16:34:39.308839+00:00",
+      "start_s": 12.031,
+      "elapsed_s": 0.28011704212985933,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "I do not know what to do to edit the shipping address"
+     },
+     {
+      "item_id": "T1-07038",
+      "started_at": "2026-10-17T16:24:33.736722+00:00",
+      "start_s": 12.311,
+      "elapsed_s": 0.2500474590342492,
+      "status": "ok",
+      "label": "get_refund",
+      "correct": false,
+      "cost_usd": 7.32e-05,
+      "text_preview": "I try to file a claim"
+     },
+     {
+      "item_id": "T1-18227",
+      "started_at": "2026-10-17T16:27:40.546088+00:00",
+      "start_s": 12.561,
+      "elapsed_s": 0.30930975009687245,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "I can't pay, I need help to inform of problems with payment"
+     },
+     {
+      "item_id": "T1-09907",
+      "started_at": "2026-10-17T16:24:40.716315+00:00",
+      "start_s": 12.87,
+      "elapsed_s": 0.3079882920719683,
+      "status": "ok",
+      "label": "contact_human_agent",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "I want help to talk to a person"
+     },
+     {
+      "item_id": "T1-14864",
+      "started_at": "2026-10-17T16:29:52.999892+00:00",
+      "start_s": 13.178,
+      "elapsed_s": 0.2530606249347329,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": false,
+      "cost_usd": 7.3e-05,
+      "text_preview": "pudate standard account"
+     },
+     {
+      "item_id": "T1-25693",
+      "started_at": "2026-10-17T16:28:22.409255+00:00",
+      "start_s": 13.431,
+      "elapsed_s": 0.28392404201440513,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": false,
+      "cost_usd": 7.410000000000001e-05,
+      "text_preview": "is it possible to see thew ETA of the purchase {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-06314",
+      "started_at": "2026-10-17T16:25:41.439646+00:00",
+      "start_s": 13.715,
+      "elapsed_s": 0.13896250003017485,
+      "status": "ok",
+      "label": "check_refund_policy",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "need to check ur money back ugarantee"
+     },
+     {
+      "item_id": "T1-07082",
+      "started_at": "2026-10-17T16:36:35.934932+00:00",
+      "start_s": 13.854,
+      "elapsed_s": 0.2512128329835832,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "ido not know how i could file a consumer claim"
+     },
+     {
+      "item_id": "T1-10435",
+      "started_at": "2026-10-17T16:27:18.567742+00:00",
+      "start_s": 14.106,
+      "elapsed_s": 0.11266312492080033,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "create {{Account Type}} account for wife"
+     },
+     {
+      "item_id": "T1-01734",
+      "started_at": "2026-10-17T16:33:27.799353+00:00",
+      "start_s": 14.218,
+      "elapsed_s": 0.1895466661080718,
+      "status": "ok",
+      "label": "change_order",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "how can I swap a product of order {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-13787",
+      "started_at": "2026-10-17T16:28:44.569068+00:00",
+      "start_s": 14.408,
+      "elapsed_s": 0.25530987489037216,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "wanna check how long it takes for my delivery to arrive"
+     },
+     {
+      "item_id": "T1-08266",
+      "started_at": "2026-10-17T16:30:40.772860+00:00",
+      "start_s": 14.663,
+      "elapsed_s": 0.22000725008547306,
+      "status": "ok",
+      "label": "contact_customer_service",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "assistance to see what hours i can call customer service"
+     },
+     {
+      "item_id": "T1-18245",
+      "started_at": "2026-10-17T16:24:41.031705+00:00",
+      "start_s": 14.883,
+      "elapsed_s": 0.27843916695564985,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "I have got to report a trouble with online payment"
+     },
+     {
+      "item_id": "T1-25578",
+      "started_at": "2026-10-17T16:25:29.267533+00:00",
+      "start_s": 15.162,
+      "elapsed_s": 0.11848304187878966,
+      "status": "ok",
+      "label": "track_order",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "I'm trying to see purchase {{Order Number}} current status"
+     },
+     {
+      "item_id": "T1-00225",
+      "started_at": "2026-10-17T16:35:18.063089+00:00",
+      "start_s": 15.28,
+      "elapsed_s": 0.26163545879535377,
+      "status": "ok",
+      "label": "cancel_order",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "can you help me cancelling order {{Order Number}}?"
+     },
+     {
+      "item_id": "T1-20172",
+      "started_at": "2026-10-17T16:22:55.499517+00:00",
+      "start_s": 15.542,
+      "elapsed_s": 0.2841941670048982,
+      "status": "ok",
+      "label": "recover_password",
+      "correct": true,
+      "cost_usd": 7.35e-05,
+      "text_preview": "is it possible to reset the keyof my user account"
+     },
+     {
+      "item_id": "T1-04787",
+      "started_at": "2026-10-17T16:29:28.051639+00:00",
+      "start_s": 15.826,
+      "elapsed_s": 0.11600654083304107,
+      "status": "ok",
+      "label": "check_invoice",
+      "correct": true,
+      "cost_usd": 7.360000000000001e-05,
+      "text_preview": "can you help me seeing the invoice #00108?"
+     },
+     {
+      "item_id": "T1-16494",
+      "started_at": "2026-10-17T16:28:12.602363+00:00",
+      "start_s": 15.942,
+      "elapsed_s": 0.25699891592375934,
+      "status": "ok",
+      "label": "track_refund",
+      "correct": false,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "when am i gonna obtain a reimbursement of money"
+     },
+     {
+      "item_id": "T1-22779",
+      "started_at": "2026-10-17T16:29:26.772130+00:00",
+      "start_s": 16.199,
+      "elapsed_s": 1.0453567921649665,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "how to sedn feedback about a service?"
+     },
+     {
+      "item_id": "T1-10580",
+      "started_at": "2026-10-17T16:30:44.113142+00:00",
+      "start_s": 17.244,
+      "elapsed_s": 0.11116487486287951,
+      "status": "ok",
+      "label": "create_account",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "can I open a {{Account Type}} account for my daughter?"
+     },
+     {
+      "item_id": "T1-15360",
+      "started_at": "2026-10-17T16:25:22.487845+00:00",
+      "start_s": 17.355,
+      "elapsed_s": 0.13179716700688004,
+      "status": "ok",
+      "label": "get_invoice",
+      "correct": true,
+      "cost_usd": 7.340000000000001e-05,
+      "text_preview": "mail me my invoices from {{Person Name}}"
+     },
+     {
+      "item_id": "T1-03811",
+      "started_at": "2026-10-17T16:23:45.583070+00:00",
+      "start_s": 17.487,
+      "elapsed_s": 0.2561317919753492,
+      "status": "ok",
+      "label": "check_cancellation_fee",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "how do I check the termination penalties ?"
+     },
+     {
+      "item_id": "T1-02606",
+      "started_at": "2026-10-17T16:27:54.487194+00:00",
+      "start_s": 17.743,
+      "elapsed_s": 0.5310184999834746,
+      "status": "ok",
+      "label": "change_shipping_address",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "I have troubles trying to update the address"
+     },
+     {
+      "item_id": "T1-13911",
+      "started_at": "2026-10-17T16:24:21.232278+00:00",
+      "start_s": 18.274,
+      "elapsed_s": 0.2630513340700418,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 7.32e-05,
+      "text_preview": "modifying {{Account Category}} account"
+     },
+     {
+      "item_id": "T1-21952",
+      "started_at": "2026-10-17T16:31:45.427302+00:00",
+      "start_s": 18.537,
+      "elapsed_s": 0.285543582867831,
+      "status": "ok",
+      "label": "review",
+      "correct": true,
+      "cost_usd": 7.379999999999999e-05,
+      "text_preview": "i do not know how i could leave some feedback for a product"
+     },
+     {
+      "item_id": "T1-16199",
+      "started_at": "2026-10-17T16:32:43.595393+00:00",
+      "start_s": 18.823,
+      "elapsed_s": 0.31559033296070993,
+      "status": "ok",
+      "label": "get_refund",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "want help obtaining reimbursements ofmy money"
+     },
+     {
+      "item_id": "T1-13771",
+      "started_at": "2026-10-17T16:28:20.770750+00:00",
+      "start_s": 19.138,
+      "elapsed_s": 0.13479470810852945,
+      "status": "ok",
+      "label": "delivery_period",
+      "correct": true,
+      "cost_usd": 7.390000000000001e-05,
+      "text_preview": "can you show me how long it takes for the article to arrive?"
+     },
+     {
+      "item_id": "T1-18606",
+      "started_at": "2026-10-17T16:24:15.998278+00:00",
+      "start_s": 19.273,
+      "elapsed_s": 0.24859908293001354,
+      "status": "ok",
+      "label": "payment_issue",
+      "correct": true,
+      "cost_usd": 7.329999999999999e-05,
+      "text_preview": "i have to notify of problems with payments"
+     },
+     {
+      "item_id": "T1-13906",
+      "started_at": "2026-10-17T16:35:15.864451+00:00",
+      "start_s": 19.522,
+      "elapsed_s": 0.44661445799283683,
+      "status": "ok",
+      "label": "edit_account",
+      "correct": true,
+      "cost_usd": 7.3e-05,
+      "text_preview": "update info on pro account"
+     },
+     {
+      "item_id": "T1-24291",
+      "started_at": "2026-10-17T16:27:06.530865+00:00",
+      "start_s": 19.969,
+      "elapsed_s": 0.25114295817911625,
+      "status": "ok",
+      "label": "switch_account",
+      "correct": true,
+      "cost_usd": 7.37e-05,
+      "text_preview": "what do I have to do to use the standard account?"
+     }
+    ],
+    "opus-low": [
+     {
+      "item_id": "T1-11543",
+      "started_at": "2026-10-17T16:34:24.972316+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 6.4637309168465436,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 0.024016,
+      "text_preview": "I don't need my damn standard account, I have to remove it"
+     },
+     {
+      "item_id": "T1-11343",
+      "started_at": "2026-10-17T16:31:42.588224+00:00",
+      "start_s": 6.464,
+      "elapsed_s": 6.305621375096962,
+      "status": "ok",
+      "label": "delete_account",
+      "correct": true,
+      "cost_usd": 0.023476,
+      "text_preview": "I don't make use of my {{Account Type}} account, help to delete it"
+     },
+     {
+      "item_id": "T1-07603",
+      "started_at": "2026-10-17T16:35:41.937798+00:00",
+      "start_s": 12.769,
+      "elapsed_s": 7.42111395788379,
+      "status": "ok",
+      "label": "complaint",
+      "correct": true,
+      "cost_usd": 0.023988,
+      "text_preview": "i want help to file a customer complaint against ur business"
+     }
+    ]
+   }
+  },
+  "t3": {
+   "test": "T3",
+   "label": "Photo input",
+   "n_items": 1999,
+   "show_items": false,
+   "placeholder": "Product photo and listing sent",
+   "segments": [
+    {
+     "from_s": 0,
+     "to_s": 15,
+     "speed": 1
+    }
+   ],
+   "calls": {
+    "jev": [
+     {
+      "item_id": "T3-B01906EDL6",
+      "started_at": "2026-10-17T16:29:08.523877+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 0.21847033291123807,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 5.3634e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00MR3TDM4",
+      "started_at": "2026-10-17T16:36:15.481340+00:00",
+      "start_s": 0.218,
+      "elapsed_s": 0.357077042106539,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 8.933400000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B002ZFJ7OS",
+      "started_at": "2026-10-17T16:26:22.218665+00:00",
+      "start_s": 0.576,
+      "elapsed_s": 0.2311459588818252,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.00012012000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00N07MNSW",
+      "started_at": "2026-10-17T16:32:06.323538+00:00",
+      "start_s": 0.807,
+      "elapsed_s": 0.35872770799323916,
+      "status": "ok",
+      "label": "Timers",
+      "correct": false,
+      "cost_usd": 0.00012028800000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000AMVUN4",
+      "started_at": "2026-10-17T16:36:32.136701+00:00",
+      "start_s": 1.165,
+      "elapsed_s": 0.3763857081066817,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 6.1278e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0B7RYHCLN",
+      "started_at": "2026-10-17T16:34:35.904767+00:00",
+      "start_s": 1.542,
+      "elapsed_s": 0.2524404169525951,
+      "status": "ok",
+      "label": "Electrical Wire",
+      "correct": true,
+      "cost_usd": 8.538600000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B014VKHZ3O",
+      "started_at": "2026-10-17T16:30:54.523118+00:00",
+      "start_s": 1.794,
+      "elapsed_s": 0.3314377497881651,
+      "status": "ok",
+      "label": "Outlets & Accessories",
+      "correct": false,
+      "cost_usd": 0.00011823,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B078TZXWGL",
+      "started_at": "2026-10-17T16:33:38.631472+00:00",
+      "start_s": 2.126,
+      "elapsed_s": 0.21617937507107854,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 0.00012264,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B096BD8565",
+      "started_at": "2026-10-17T16:29:33.063862+00:00",
+      "start_s": 2.342,
+      "elapsed_s": 0.20470754196867347,
+      "status": "ok",
+      "label": "Light Sockets",
+      "correct": true,
+      "cost_usd": 8.051400000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BM6M2PC6",
+      "started_at": "2026-10-17T16:31:28.132445+00:00",
+      "start_s": 2.547,
+      "elapsed_s": 0.28112433291971684,
+      "status": "ok",
+      "label": "Tools & Hardware",
+      "correct": false,
+      "cost_usd": 9.874200000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07HHGNYQ3",
+      "started_at": "2026-10-17T16:27:49.777033+00:00",
+      "start_s": 2.828,
+      "elapsed_s": 0.4108015410602093,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 9.6978e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07DKY5HPM",
+      "started_at": "2026-10-17T16:34:38.432610+00:00",
+      "start_s": 3.238,
+      "elapsed_s": 0.3057138330768794,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.00010647000000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B003X4UPFA",
+      "started_at": "2026-10-17T16:24:08.401931+00:00",
+      "start_s": 3.544,
+      "elapsed_s": 0.3897557910531759,
+      "status": "ok",
+      "label": "Plugs",
+      "correct": true,
+      "cost_usd": 0.000147588,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0CG9J5XZN",
+      "started_at": "2026-10-17T16:33:37.400727+00:00",
+      "start_s": 3.934,
+      "elapsed_s": 0.2343422081321478,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.00014002800000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00K5Y8LBG",
+      "started_at": "2026-10-17T16:24:09.652732+00:00",
+      "start_s": 4.168,
+      "elapsed_s": 0.23092420888133347,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": false,
+      "cost_usd": 0.00014385000000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09Y5Z4JJL",
+      "started_at": "2026-10-17T16:30:48.561214+00:00",
+      "start_s": 4.399,
+      "elapsed_s": 0.29312929208390415,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00012243,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0741CNCPL",
+      "started_at": "2026-10-17T16:26:07.019206+00:00",
+      "start_s": 4.692,
+      "elapsed_s": 0.3531619580462575,
+      "status": "ok",
+      "label": "Tools & Hardware",
+      "correct": false,
+      "cost_usd": 0.000140364,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BJL228HB",
+      "started_at": "2026-10-17T16:31:45.324598+00:00",
+      "start_s": 5.046,
+      "elapsed_s": 0.2368453328963369,
+      "status": "ok",
+      "label": "Door Chimes & Bells",
+      "correct": true,
+      "cost_usd": 0.00013855800000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07S2JP9Z1",
+      "started_at": "2026-10-17T16:34:47.970749+00:00",
+      "start_s": 5.282,
+      "elapsed_s": 0.2147888329345733,
+      "status": "ok",
+      "label": "Door Chimes & Bells",
+      "correct": true,
+      "cost_usd": 8.156400000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B087X3PD5J",
+      "started_at": "2026-10-17T16:28:30.568834+00:00",
+      "start_s": 5.497,
+      "elapsed_s": 0.32539191702380776,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 0.00015283800000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B005GOGBU8",
+      "started_at": "2026-10-17T16:27:30.369313+00:00",
+      "start_s": 5.823,
+      "elapsed_s": 0.22974783298559487,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 9.622200000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00J9T3CKI",
+      "started_at": "2026-10-17T16:26:07.285775+00:00",
+      "start_s": 6.052,
+      "elapsed_s": 0.281881834147498,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": true,
+      "cost_usd": 0.00014523600000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01A0PKKMW",
+      "started_at": "2026-10-17T16:23:49.109722+00:00",
+      "start_s": 6.334,
+      "elapsed_s": 0.2252502499613911,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 0.000156744,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01GP5G43U",
+      "started_at": "2026-10-17T16:24:52.031006+00:00",
+      "start_s": 6.559,
+      "elapsed_s": 0.20951991598121822,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 5.8086000000000006e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B076D6SVJ1",
+      "started_at": "2026-10-17T16:23:50.283633+00:00",
+      "start_s": 6.769,
+      "elapsed_s": 0.22719745803624392,
+      "status": "ok",
+      "label": "Timers",
+      "correct": false,
+      "cost_usd": 6.0984000000000004e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000LOKGVS",
+      "started_at": "2026-10-17T16:31:51.190791+00:00",
+      "start_s": 6.996,
+      "elapsed_s": 0.28710441710427403,
+      "status": "ok",
+      "label": "Plugs",
+      "correct": false,
+      "cost_usd": 0.00011869200000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0057J0B9E",
+      "started_at": "2026-10-17T16:23:27.619187+00:00",
+      "start_s": 7.283,
+      "elapsed_s": 0.2299292921088636,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 4.4394e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07JH1W57M",
+      "started_at": "2026-10-17T16:27:52.152876+00:00",
+      "start_s": 7.513,
+      "elapsed_s": 0.2574704580474645,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.00012327,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B007OY8EXK",
+      "started_at": "2026-10-17T16:26:42.671325+00:00",
+      "start_s": 7.771,
+      "elapsed_s": 0.24948008288629353,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011827200000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00F23PTW4",
+      "started_at": "2026-10-17T16:31:51.873270+00:00",
+      "start_s": 8.02,
+      "elapsed_s": 0.21331033296883106,
+      "status": "ok",
+      "label": "Electrical Connectors",
+      "correct": false,
+      "cost_usd": 4.4646e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B007EWNBVW",
+      "started_at": "2026-10-17T16:30:35.996986+00:00",
+      "start_s": 8.233,
+      "elapsed_s": 0.25266045797616243,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011394600000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00DUHM6YS",
+      "started_at": "2026-10-17T16:34:40.191406+00:00",
+      "start_s": 8.486,
+      "elapsed_s": 0.2330297501757741,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 6.363e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09PHFKY39",
+      "started_at": "2026-10-17T16:34:24.106093+00:00",
+      "start_s": 8.719,
+      "elapsed_s": 0.22418370889499784,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 7.854e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00DN457YE",
+      "started_at": "2026-10-17T16:30:33.907712+00:00",
+      "start_s": 8.943,
+      "elapsed_s": 0.24284674995578825,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.00011495400000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09VGKNTSX",
+      "started_at": "2026-10-17T16:28:27.003134+00:00",
+      "start_s": 9.186,
+      "elapsed_s": 0.27543720812536776,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.000113652,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0B7RJ6D55",
+      "started_at": "2026-10-17T16:24:20.567386+00:00",
+      "start_s": 9.462,
+      "elapsed_s": 0.2207387499511242,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 0.00016228800000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B008AGUABU",
+      "started_at": "2026-10-17T16:36:49.166956+00:00",
+      "start_s": 9.682,
+      "elapsed_s": 0.23359079100191593,
+      "status": "ok",
+      "label": "Electrical Wire",
+      "correct": true,
+      "cost_usd": 0.00013477800000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00B8NOQD0",
+      "started_at": "2026-10-17T16:26:58.389374+00:00",
+      "start_s": 9.916,
+      "elapsed_s": 0.224081875057891,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 6.405e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00E1HGAES",
+      "started_at": "2026-10-17T16:31:54.505295+00:00",
+      "start_s": 10.14,
+      "elapsed_s": 0.21355441701598465,
+      "status": "ok",
+      "label": "Ballasts",
+      "correct": true,
+      "cost_usd": 8.7444e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01N9Q9DJD",
+      "started_at": "2026-10-17T16:27:10.152949+00:00",
+      "start_s": 10.354,
+      "elapsed_s": 0.2918097919318825,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 9.7146e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BCWD1GGP",
+      "started_at": "2026-10-17T16:23:30.504015+00:00",
+      "start_s": 10.645,
+      "elapsed_s": 0.28964441712014377,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00014007000000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0087HLHF0",
+      "started_at": "2026-10-17T16:23:42.309444+00:00",
+      "start_s": 10.935,
+      "elapsed_s": 0.35512129100970924,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011474400000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B092R1N11H",
+      "started_at": "2026-10-17T16:35:30.648863+00:00",
+      "start_s": 11.29,
+      "elapsed_s": 0.23882420803420246,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 0.00010798200000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01N3R26SD",
+      "started_at": "2026-10-17T16:29:16.283976+00:00",
+      "start_s": 11.529,
+      "elapsed_s": 0.35877108410932124,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011970000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0069KW1O8",
+      "started_at": "2026-10-17T16:27:55.866423+00:00",
+      "start_s": 11.888,
+      "elapsed_s": 0.24942012503743172,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": false,
+      "cost_usd": 0.000146916,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B08CKZ6GMQ",
+      "started_at": "2026-10-17T16:26:55.980966+00:00",
+      "start_s": 12.137,
+      "elapsed_s": 0.3085976669099182,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 7.4718e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B073SY516M",
+      "started_at": "2026-10-17T16:36:35.153486+00:00",
+      "start_s": 12.446,
+      "elapsed_s": 0.2356766250450164,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": true,
+      "cost_usd": 0.00015888599999999998,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B002F8VBHQ",
+      "started_at": "2026-10-17T16:33:07.196677+00:00",
+      "start_s": 12.681,
+      "elapsed_s": 0.30652537499554455,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.000108906,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00HED8PWG",
+      "started_at": "2026-10-17T16:26:34.672970+00:00",
+      "start_s": 12.988,
+      "elapsed_s": 0.2599078749772161,
+      "status": "ok",
+      "label": "Outlets & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011121600000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00CS2TWE8",
+      "started_at": "2026-10-17T16:32:07.457105+00:00",
+      "start_s": 13.248,
+      "elapsed_s": 0.3525324589572847,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": true,
+      "cost_usd": 0.00013923,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0039QADEA",
+      "started_at": "2026-10-17T16:26:11.952976+00:00",
+      "start_s": 13.6,
+      "elapsed_s": 0.293121833819896,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 5.0610000000000005e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00OQI8QWG",
+      "started_at": "2026-10-17T16:33:41.852673+00:00",
+      "start_s": 13.894,
+      "elapsed_s": 0.25834466703236103,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 5.0022e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B08XK4XK33",
+      "started_at": "2026-10-17T16:22:56.161369+00:00",
+      "start_s": 14.152,
+      "elapsed_s": 0.21996216708794236,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.000142548,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000U5G6SK",
+      "started_at": "2026-10-17T16:32:55.980008+00:00",
+      "start_s": 14.372,
+      "elapsed_s": 0.22450229106470942,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": false,
+      "cost_usd": 4.082400000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0B3XLGQ84",
+      "started_at": "2026-10-17T16:24:33.677311+00:00",
+      "start_s": 14.596,
+      "elapsed_s": 0.24481841688975692,
+      "status": "ok",
+      "label": "Outlets & Accessories",
+      "correct": true,
+      "cost_usd": 0.00016228800000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B071GKCKS3",
+      "started_at": "2026-10-17T16:29:06.367106+00:00",
+      "start_s": 14.841,
+      "elapsed_s": 0.20507979206740856,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 4.2756e-05,
+      "text_preview": ""
+     }
+    ],
+    "decisions": [
+     {
+      "item_id": "T3-B01906EDL6",
+      "started_at": "2026-10-17T16:30:13.467783+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 0.27712125005200505,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 6.510000000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00MR3TDM4",
+      "started_at": "2026-10-17T16:25:40.542254+00:00",
+      "start_s": 0.277,
+      "elapsed_s": 0.5570499589666724,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 0.0001106,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B002ZFJ7OS",
+      "started_at": "2026-10-17T16:29:30.134046+00:00",
+      "start_s": 0.834,
+      "elapsed_s": 0.19977762503549457,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.0001201,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00N07MNSW",
+      "started_at": "2026-10-17T16:32:03.655121+00:00",
+      "start_s": 1.034,
+      "elapsed_s": 0.20642450009472668,
+      "status": "ok",
+      "label": "Timers",
+      "correct": false,
+      "cost_usd": 0.0001211,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000AMVUN4",
+      "started_at": "2026-10-17T16:23:35.206564+00:00",
+      "start_s": 1.24,
+      "elapsed_s": 0.3216720838099718,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 7.76e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0B7RYHCLN",
+      "started_at": "2026-10-17T16:29:28.371407+00:00",
+      "start_s": 1.562,
+      "elapsed_s": 0.30172037496231496,
+      "status": "ok",
+      "label": "Electrical Wire",
+      "correct": true,
+      "cost_usd": 0.00010140000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B014VKHZ3O",
+      "started_at": "2026-10-17T16:34:17.244564+00:00",
+      "start_s": 1.864,
+      "elapsed_s": 0.3176266660448164,
+      "status": "ok",
+      "label": "Outlets & Accessories",
+      "correct": false,
+      "cost_usd": 0.0001212,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B078TZXWGL",
+      "started_at": "2026-10-17T16:26:48.116331+00:00",
+      "start_s": 2.181,
+      "elapsed_s": 0.32967375009320676,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 0.0001473,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B096BD8565",
+      "started_at": "2026-10-17T16:24:37.024806+00:00",
+      "start_s": 2.511,
+      "elapsed_s": 0.32315379101783037,
+      "status": "ok",
+      "label": "Light Sockets",
+      "correct": true,
+      "cost_usd": 0.0001087,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BM6M2PC6",
+      "started_at": "2026-10-17T16:24:15.162247+00:00",
+      "start_s": 2.834,
+      "elapsed_s": 0.31478491704910994,
+      "status": "refusal",
+      "label": null,
+      "correct": false,
+      "cost_usd": 6.610000000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07HHGNYQ3",
+      "started_at": "2026-10-17T16:23:07.276924+00:00",
+      "start_s": 3.149,
+      "elapsed_s": 0.41992787504568696,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00010960000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07DKY5HPM",
+      "started_at": "2026-10-17T16:36:49.820075+00:00",
+      "start_s": 3.569,
+      "elapsed_s": 0.2731442921794951,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.00011710000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B003X4UPFA",
+      "started_at": "2026-10-17T16:36:41.172415+00:00",
+      "start_s": 3.842,
+      "elapsed_s": 0.32514291699044406,
+      "status": "ok",
+      "label": "Plugs",
+      "correct": true,
+      "cost_usd": 0.0001588,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0CG9J5XZN",
+      "started_at": "2026-10-17T16:27:51.891412+00:00",
+      "start_s": 4.167,
+      "elapsed_s": 0.34207208291627467,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.00016460000000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00K5Y8LBG",
+      "started_at": "2026-10-17T16:27:21.169696+00:00",
+      "start_s": 4.509,
+      "elapsed_s": 0.38524862495251,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": false,
+      "cost_usd": 0.00015860000000000003,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09Y5Z4JJL",
+      "started_at": "2026-10-17T16:32:50.392129+00:00",
+      "start_s": 4.895,
+      "elapsed_s": 0.3423369580414146,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.000138,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0741CNCPL",
+      "started_at": "2026-10-17T16:30:57.841430+00:00",
+      "start_s": 5.237,
+      "elapsed_s": 0.32762537500821054,
+      "status": "ok",
+      "label": "Tools & Hardware",
+      "correct": false,
+      "cost_usd": 0.0001508,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BJL228HB",
+      "started_at": "2026-10-17T16:25:57.599662+00:00",
+      "start_s": 5.565,
+      "elapsed_s": 0.3663335829041898,
+      "status": "ok",
+      "label": "Tools & Hardware",
+      "correct": false,
+      "cost_usd": 0.0001565,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07S2JP9Z1",
+      "started_at": "2026-10-17T16:26:34.479423+00:00",
+      "start_s": 5.931,
+      "elapsed_s": 0.3441722500137985,
+      "status": "ok",
+      "label": "Door Chimes & Bells",
+      "correct": true,
+      "cost_usd": 0.0001115,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B087X3PD5J",
+      "started_at": "2026-10-17T16:27:34.849541+00:00",
+      "start_s": 6.275,
+      "elapsed_s": 0.30348941683769226,
+      "status": "ok",
+      "label": "Switches & Dimmers",
+      "correct": true,
+      "cost_usd": 0.0001559,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B005GOGBU8",
+      "started_at": "2026-10-17T16:23:45.274863+00:00",
+      "start_s": 6.578,
+      "elapsed_s": 0.30671458318829536,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011960000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00J9T3CKI",
+      "started_at": "2026-10-17T16:34:33.492206+00:00",
+      "start_s": 6.885,
+      "elapsed_s": 0.28078204090707004,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": true,
+      "cost_usd": 0.0001639,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01A0PKKMW",
+      "started_at": "2026-10-17T16:24:53.862387+00:00",
+      "start_s": 7.166,
+      "elapsed_s": 0.3101396670099348,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 0.0001653,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01GP5G43U",
+      "started_at": "2026-10-17T16:34:17.767530+00:00",
+      "start_s": 7.476,
+      "elapsed_s": 0.28221429185941815,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 6.440000000000001e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B076D6SVJ1",
+      "started_at": "2026-10-17T16:33:43.711748+00:00",
+      "start_s": 7.758,
+      "elapsed_s": 0.22280020778998733,
+      "status": "ok",
+      "label": "Timers",
+      "correct": false,
+      "cost_usd": 8.8e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000LOKGVS",
+      "started_at": "2026-10-17T16:32:54.591901+00:00",
+      "start_s": 7.981,
+      "elapsed_s": 0.21200774982571602,
+      "status": "ok",
+      "label": "Plugs",
+      "correct": false,
+      "cost_usd": 0.0001207,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0057J0B9E",
+      "started_at": "2026-10-17T16:23:29.539742+00:00",
+      "start_s": 8.193,
+      "elapsed_s": 0.24377841595560312,
+      "status": "ok",
+      "label": "Tools & Hardware",
+      "correct": false,
+      "cost_usd": 5.8800000000000006e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B07JH1W57M",
+      "started_at": "2026-10-17T16:34:52.120160+00:00",
+      "start_s": 8.437,
+      "elapsed_s": 0.3977107908576727,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.00012080000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B007OY8EXK",
+      "started_at": "2026-10-17T16:30:47.528012+00:00",
+      "start_s": 8.835,
+      "elapsed_s": 1.0768494999501854,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.0001211,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00F23PTW4",
+      "started_at": "2026-10-17T16:30:29.186661+00:00",
+      "start_s": 9.911,
+      "elapsed_s": 0.2910856669768691,
+      "status": "ok",
+      "label": "Electrical Connectors",
+      "correct": false,
+      "cost_usd": 6.0100000000000004e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B007EWNBVW",
+      "started_at": "2026-10-17T16:23:20.299589+00:00",
+      "start_s": 10.203,
+      "elapsed_s": 0.35681866598315537,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.0001187,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00DUHM6YS",
+      "started_at": "2026-10-17T16:34:18.323174+00:00",
+      "start_s": 10.559,
+      "elapsed_s": 0.27713120891712606,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 7.43e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09PHFKY39",
+      "started_at": "2026-10-17T16:24:04.314892+00:00",
+      "start_s": 10.837,
+      "elapsed_s": 0.26895175012759864,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 0.0001092,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00DN457YE",
+      "started_at": "2026-10-17T16:30:20.254923+00:00",
+      "start_s": 11.105,
+      "elapsed_s": 0.34351408295333385,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.000118,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B09VGKNTSX",
+      "started_at": "2026-10-17T16:34:10.437325+00:00",
+      "start_s": 11.449,
+      "elapsed_s": 0.3539655839558691,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.000128,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0B7RJ6D55",
+      "started_at": "2026-10-17T16:23:36.394408+00:00",
+      "start_s": 11.803,
+      "elapsed_s": 0.21553883305750787,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 0.0001778,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B008AGUABU",
+      "started_at": "2026-10-17T16:28:16.421925+00:00",
+      "start_s": 12.019,
+      "elapsed_s": 0.31263654096983373,
+      "status": "ok",
+      "label": "Electrical Wire",
+      "correct": true,
+      "cost_usd": 0.0001352,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00B8NOQD0",
+      "started_at": "2026-10-17T16:25:39.754017+00:00",
+      "start_s": 12.331,
+      "elapsed_s": 0.1483538339380175,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 8.5e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00E1HGAES",
+      "started_at": "2026-10-17T16:28:07.612099+00:00",
+      "start_s": 12.479,
+      "elapsed_s": 0.25384829100221395,
+      "status": "ok",
+      "label": "Ballasts",
+      "correct": true,
+      "cost_usd": 0.00010330000000000002,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01N9Q9DJD",
+      "started_at": "2026-10-17T16:28:43.152536+00:00",
+      "start_s": 12.733,
+      "elapsed_s": 0.39462999999523163,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 9.830000000000002e-05,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0BCWD1GGP",
+      "started_at": "2026-10-17T16:34:35.326602+00:00",
+      "start_s": 13.128,
+      "elapsed_s": 0.4492050411645323,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.0001474,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0087HLHF0",
+      "started_at": "2026-10-17T16:31:41.339625+00:00",
+      "start_s": 13.577,
+      "elapsed_s": 0.19573570787906647,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.00011970000000000001,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B092R1N11H",
+      "started_at": "2026-10-17T16:27:58.789991+00:00",
+      "start_s": 13.773,
+      "elapsed_s": 0.4165596659295261,
+      "status": "ok",
+      "label": "Testers",
+      "correct": true,
+      "cost_usd": 0.0001085,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B01N3R26SD",
+      "started_at": "2026-10-17T16:36:25.369478+00:00",
+      "start_s": 14.189,
+      "elapsed_s": 0.21420408296398818,
+      "status": "ok",
+      "label": "Wall Plates & Accessories",
+      "correct": true,
+      "cost_usd": 0.0001283,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B0069KW1O8",
+      "started_at": "2026-10-17T16:33:59.520336+00:00",
+      "start_s": 14.404,
+      "elapsed_s": 0.22532162512652576,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": false,
+      "cost_usd": 0.0001643,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B08CKZ6GMQ",
+      "started_at": "2026-10-17T16:33:11.524188+00:00",
+      "start_s": 14.629,
+      "elapsed_s": 0.28092104219831526,
+      "status": "ok",
+      "label": "Electric Motors",
+      "correct": true,
+      "cost_usd": 0.000106,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B073SY516M",
+      "started_at": "2026-10-17T16:25:42.909506+00:00",
+      "start_s": 14.91,
+      "elapsed_s": 0.23439141712151468,
+      "status": "ok",
+      "label": "Electrical Boxes, Conduits & Fittings",
+      "correct": true,
+      "cost_usd": 0.0001694,
+      "text_preview": ""
+     }
+    ],
+    "opus-low": [
+     {
+      "item_id": "T3-B00MR3TDM4",
+      "started_at": "2026-10-17T16:30:55.498895+00:00",
+      "start_s": 0.0,
+      "elapsed_s": 4.31300854193978,
+      "status": "ok",
+      "label": "Recessed Lighting",
+      "correct": true,
+      "cost_usd": 0.018304,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B002ZFJ7OS",
+      "started_at": "2026-10-17T16:27:52.662133+00:00",
+      "start_s": 4.313,
+      "elapsed_s": 4.032515958882868,
+      "status": "ok",
+      "label": "Breakers, Load Centers & Fuses",
+      "correct": true,
+      "cost_usd": 0.018784,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B00N07MNSW",
+      "started_at": "2026-10-17T16:26:02.924866+00:00",
+      "start_s": 8.346,
+      "elapsed_s": 4.171525041107088,
+      "status": "ok",
+      "label": "Timers",
+      "correct": false,
+      "cost_usd": 0.018792,
+      "text_preview": ""
+     },
+     {
+      "item_id": "T3-B000AMVUN4",
+      "started_at": "2026-10-17T16:23:34.843938+00:00",
+      "start_s": 12.517,
+      "elapsed_s": 4.053454082924873,
+      "status": "ok",
+      "label": "Cords, Adapters & Multi-Outlets",
+      "correct": true,
+      "cost_usd": 0.016172,
+      "text_preview": ""
+     }
+    ]
+   }
+  }
+ },
+ "spotlight": {
+  "item_id": "T5-dsn-1-palette",
+  "test": "T5",
+  "text": "{\"candidate_names\": [\"brush\", \"rotate left\", \"palette\", \"edit\"], \"image\": \"an i…",
+  "question": "Which icon is this?",
+  "gold": "palette",
+  "image": "assets/dsn-1-palette.png",
+  "image_licence": "Apache-2.0",
+  "image_source": "DSN-1",
+  "picks": [
+   {
+    "system": "jev",
+    "label": "palette",
+    "confidence": 0.99,
+    "correct": true,
+    "status": "ok"
+   },
+   {
+    "system": "decisions",
+    "label": "palette",
+    "confidence": 0.94,
+    "correct": true,
+    "status": "ok"
+   },
+   {
+    "system": "opus-low",
+    "label": "palette",
+    "confidence": 0.97,
+    "correct": true,
+    "status": "ok"
+   }
+  ]
+ },
+ "results": {
+  "tests": {
+   "T1": {
+    "n": 1000,
+    "arms": {
+     "jev": {
+      "accuracy": 0.922,
+      "accuracy_ci": [
+       0.905,
+       0.938
+      ],
+      "brier": 0.12051752980308132,
+      "brier_ci": [
+       0.09931756220181613,
+       0.1427058438174676
+      ],
+      "ece_shown_not_claimed": 0.01812919191919197,
+      "exact_one_share": 0.418,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.045792978000000005
+     },
+     "decisions": {
+      "accuracy": 0.911,
+      "accuracy_ci": [
+       0.893,
+       0.928
+      ],
+      "brier": 0.16055719999999998,
+      "brier_ci": [
+       0.141356375,
+       0.180678965
+      ],
+      "ece_shown_not_claimed": 0.10159159159159165,
+      "exact_one_share": 0.07407407407407407,
+      "status_rates": {
+       "ok": 0.999,
+       "refusal": 0.001
+      },
+      "cost_per_1000_usd": 0.07342470000000001
+     },
+     "opus-low": {
+      "accuracy": 0.95,
+      "accuracy_ci": [
+       0.9,
+       0.99
+      ],
+      "brier": 0.06642427723484563,
+      "brier_ci": [
+       0.03303050169728073,
+       0.10726210477222808
+      ],
+      "ece_shown_not_claimed": 0.12224400185437748,
+      "exact_one_share": 0.0,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 24.029600000000002
+     }
+    },
+    "pairs": {
+     "jev vs decisions": {
+      "accuracy_diff": 0.011,
+      "accuracy_diff_ci": [
+       -0.006,
+       0.028
+      ],
+      "only_first_right": 43,
+      "only_second_right": 32,
+      "mcnemar_p": 0.24804574189252795,
+      "brier_diff": -0.040039670196918675,
+      "brier_diff_ci": [
+       -0.05762591708142027,
+       -0.02254858692531375
+      ],
+      "mcnemar_p_holm": 0.24804574189252795,
+      "accuracy_claim": false,
+      "brier_claim": true
+     },
+     "jev vs opus-low": {
+      "accuracy_diff": -0.01,
+      "accuracy_diff_ci": [
+       -0.03,
+       0.0
+      ],
+      "only_first_right": 0,
+      "only_second_right": 1,
+      "mcnemar_p": 1.0,
+      "brier_diff": 0.03222741381708784,
+      "brier_diff_ci": [
+       -0.005620725706192771,
+       0.0772992151051512
+      ],
+      "mcnemar_p_holm": 1.0,
+      "accuracy_claim": false,
+      "brier_claim": false
+     },
+     "decisions vs opus-low": {
+      "accuracy_diff": -0.03,
+      "accuracy_diff_ci": [
+       -0.07,
+       0.0
+      ],
+      "only_first_right": 0,
+      "only_second_right": 3,
+      "mcnemar_p": 0.25,
+      "brier_diff": 0.06728772276515436,
+      "brier_diff_ci": [
+       0.030022940485387877,
+       0.1088274608503782
+      ],
+      "mcnemar_p_holm": 0.75,
+      "accuracy_claim": false,
+      "brier_claim": true
+     }
+    },
+    "sampled": {
+     "opus-low": {
+      "n": 100,
+      "of": 1000
+     }
+    }
+   },
+   "T2": {
+    "n": 2000,
+    "arms": {
+     "jev": {
+      "accuracy": 0.859,
+      "accuracy_ci": [
+       0.8435,
+       0.8735
+      ],
+      "brier": 0.26230864900520356,
+      "brier_ci": [
+       0.23798707062876237,
+       0.2879143145492807
+      ],
+      "ece_shown_not_claimed": 0.06367166666666671,
+      "exact_one_share": 0.424,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.036867789000000005
+     },
+     "decisions": {
+      "accuracy": 0.858,
+      "accuracy_ci": [
+       0.843,
+       0.873
+      ],
+      "brier": 0.2829875,
+      "brier_ci": [
+       0.25629535750000004,
+       0.31054574250000005
+      ],
+      "ece_shown_not_claimed": 0.08615963855421674,
+      "exact_one_share": 0.5753012048192772,
+      "status_rates": {
+       "ok": 0.996,
+       "refusal": 0.004
+      },
+      "cost_per_1000_usd": 0.0549802
+     },
+     "opus-low": {
+      "accuracy": 0.91,
+      "accuracy_ci": [
+       0.87,
+       0.945
+      ],
+      "brier": 0.21460353334729437,
+      "brier_ci": [
+       0.1535561507259598,
+       0.28201625551860304
+      ],
+      "ece_shown_not_claimed": 0.0789552350656379,
+      "exact_one_share": 0.0,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 15.23234
+     }
+    },
+    "pairs": {
+     "jev vs decisions": {
+      "accuracy_diff": 0.001,
+      "accuracy_diff_ci": [
+       -0.008,
+       0.0105
+      ],
+      "only_first_right": 46,
+      "only_second_right": 44,
+      "mcnemar_p": 0.9161288770112893,
+      "brier_diff": -0.02067885099479645,
+      "brier_diff_ci": [
+       -0.03215019604147536,
+       -0.009591552097490056
+      ],
+      "mcnemar_p_holm": 0.9161288770112893,
+      "accuracy_claim": false,
+      "brier_claim": true
+     },
+     "jev vs opus-low": {
+      "accuracy_diff": -0.05,
+      "accuracy_diff_ci": [
+       -0.08,
+       -0.02
+      ],
+      "only_first_right": 0,
+      "only_second_right": 10,
+      "mcnemar_p": 0.001953125,
+      "brier_diff": 0.03818775233783981,
+      "brier_diff_ci": [
+       0.008763905459688038,
+       0.0695064374075732
+      ],
+      "mcnemar_p_holm": 0.00390625,
+      "accuracy_claim": true,
+      "brier_claim": true
+     },
+     "decisions vs opus-low": {
+      "accuracy_diff": -0.07,
+      "accuracy_diff_ci": [
+       -0.11,
+       -0.035
+      ],
+      "only_first_right": 0,
+      "only_second_right": 14,
+      "mcnemar_p": 0.0001220703125,
+      "brier_diff": 0.06982946665270565,
+      "brier_diff_ci": [
+       0.026771434542378594,
+       0.11834600891306052
+      ],
+      "mcnemar_p_holm": 0.0003662109375,
+      "accuracy_claim": true,
+      "brier_claim": true
+     }
+    },
+    "sampled": {
+     "opus-low": {
+      "n": 200,
+      "of": 2000
+     }
+    }
+   },
+   "T3": {
+    "n": 1999,
+    "arms": {
+     "jev": {
+      "accuracy": 0.8654327163581791,
+      "accuracy_ci": [
+       0.8504252126063031,
+       0.8804402201100551
+      ],
+      "brier": 0.2535588751114666,
+      "brier_ci": [
+       0.22964457275035843,
+       0.27827868172276116
+      ],
+      "ece_shown_not_claimed": 0.04604807454232167,
+      "exact_one_share": 0.26263131565782893,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.11407571885942973
+     },
+     "decisions": {
+      "accuracy": 0.8569284642321161,
+      "accuracy_ci": [
+       0.8414207103551776,
+       0.8724362181090545
+      ],
+      "brier": 0.28701640820410207,
+      "brier_ci": [
+       0.2597664057028515,
+       0.314865907953977
+      ],
+      "ece_shown_not_claimed": 0.08762907268170428,
+      "exact_one_share": 0.5914786967418546,
+      "status_rates": {
+       "ok": 0.9979989994997499,
+       "refusal": 0.002001000500250125
+      },
+      "cost_per_1000_usd": 0.12442836418209105
+     },
+     "opus-low": {
+      "accuracy": 0.8944723618090452,
+      "accuracy_ci": [
+       0.8492462311557789,
+       0.9346733668341709
+      ],
+      "brier": 0.22960836803122672,
+      "brier_ci": [
+       0.16357437806359607,
+       0.30025779743089714
+      ],
+      "ece_shown_not_claimed": 0.07028601253912385,
+      "exact_one_share": 0.0,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 18.75774874371859
+     }
+    },
+    "pairs": {
+     "jev vs decisions": {
+      "accuracy_diff": 0.008504252126063032,
+      "accuracy_diff_ci": [
+       0.0,
+       0.017008504252126064
+      ],
+      "only_first_right": 47,
+      "only_second_right": 30,
+      "mcnemar_p": 0.06754925145902678,
+      "brier_diff": -0.03345753309263551,
+      "brier_diff_ci": [
+       -0.045052876358850774,
+       -0.022005959441306205
+      ],
+      "mcnemar_p_holm": 0.06754925145902678,
+      "accuracy_claim": false,
+      "brier_claim": true
+     },
+     "jev vs opus-low": {
+      "accuracy_diff": -0.04522613065326633,
+      "accuracy_diff_ci": [
+       -0.07537688442211055,
+       -0.020100502512562814
+      ],
+      "only_first_right": 0,
+      "only_second_right": 9,
+      "mcnemar_p": 0.00390625,
+      "brier_diff": 0.03971674236926054,
+      "brier_diff_ci": [
+       0.009574673293425855,
+       0.07267663699482817
+      ],
+      "mcnemar_p_holm": 0.0078125,
+      "accuracy_claim": true,
+      "brier_claim": true
+     },
+     "decisions vs opus-low": {
+      "accuracy_diff": -0.06030150753768844,
+      "accuracy_diff_ci": [
+       -0.09547738693467336,
+       -0.03015075376884422
+      ],
+      "only_first_right": 0,
+      "only_second_right": 12,
+      "mcnemar_p": 0.00048828125,
+      "brier_diff": 0.06775846613962755,
+      "brier_diff_ci": [
+       0.027566734851340573,
+       0.11454352076980015
+      ],
+      "mcnemar_p_holm": 0.00146484375,
+      "accuracy_claim": true,
+      "brier_claim": true
+     }
+    },
+    "sampled": {
+     "opus-low": {
+      "n": 199,
+      "of": 1999
+     }
+    }
+   },
+   "T4": {
+    "n": 1000,
+    "arms": {
+     "jev": {
+      "accuracy": 0.882,
+      "accuracy_ci": [
+       0.861,
+       0.901
+      ],
+      "brier": 0.17238392282420162,
+      "brier_ci": [
+       0.14714259209060299,
+       0.19943202795684112
+      ],
+      "ece_shown_not_claimed": 0.020999898989899,
+      "exact_one_share": 0.201,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.10701948600000001
+     },
+     "decisions": {
+      "accuracy": 0.842,
+      "accuracy_ci": [
+       0.819,
+       0.864
+      ],
+      "brier": 0.2607762,
+      "brier_ci": [
+       0.23396994000000002,
+       0.28947964
+      ],
+      "ece_shown_not_claimed": 0.07969999999999997,
+      "exact_one_share": 0.056,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.139481
+     },
+     "opus-low": {
+      "accuracy": 0.97,
+      "accuracy_ci": [
+       0.93,
+       1.0
+      ],
+      "brier": 0.056372,
+      "brier_ci": [
+       0.018123375,
+       0.10845162499999995
+      ],
+      "ece_shown_not_claimed": 0.07099999999999995,
+      "exact_one_share": 0.0,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 22.448480000000004
+     }
+    },
+    "pairs": {
+     "jev vs decisions": {
+      "accuracy_diff": 0.04,
+      "accuracy_diff_ci": [
+       0.021,
+       0.059
+      ],
+      "only_first_right": 68,
+      "only_second_right": 28,
+      "mcnemar_p": 5.4591543577114465e-05,
+      "brier_diff": -0.0883922771757984,
+      "brier_diff_ci": [
+       -0.10891277873329253,
+       -0.06817753930619325
+      ],
+      "mcnemar_p_holm": 5.4591543577114465e-05,
+      "accuracy_claim": true,
+      "brier_claim": true
+     },
+     "jev vs opus-low": {
+      "accuracy_diff": -0.04,
+      "accuracy_diff_ci": [
+       -0.09,
+       0.0
+      ],
+      "only_first_right": 1,
+      "only_second_right": 5,
+      "mcnemar_p": 0.21875,
+      "brier_diff": 0.0728745281093766,
+      "brier_diff_ci": [
+       0.028444405735384135,
+       0.12559181027063562
+      ],
+      "mcnemar_p_holm": 0.21875,
+      "accuracy_claim": false,
+      "brier_claim": true
+     },
+     "decisions vs opus-low": {
+      "accuracy_diff": -0.1,
+      "accuracy_diff_ci": [
+       -0.17,
+       -0.04
+      ],
+      "only_first_right": 1,
+      "only_second_right": 11,
+      "mcnemar_p": 0.00634765625,
+      "brier_diff": 0.18250600000000003,
+      "brier_diff_ci": [
+       0.1191439,
+       0.2539957125
+      ],
+      "mcnemar_p_holm": 0.01904296875,
+      "accuracy_claim": true,
+      "brier_claim": true
+     }
+    },
+    "sampled": {
+     "opus-low": {
+      "n": 100,
+      "of": 1000
+     }
+    }
+   },
+   "T5": {
+    "n": 1071,
+    "arms": {
+     "jev": {
+      "accuracy": 0.9449112978524743,
+      "accuracy_ci": [
+       0.930905695611578,
+       0.957983193277311
+      ],
+      "brier": 0.0906246819075894,
+      "brier_ci": [
+       0.07446681157175314,
+       0.10834607861190254
+      ],
+      "ece_shown_not_claimed": 0.021182318045063108,
+      "exact_one_share": 0.5406162464985994,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.051528666666666674
+     },
+     "decisions": {
+      "accuracy": 0.9056956115779645,
+      "accuracy_ci": [
+       0.8879551820728291,
+       0.9234360410831
+      ],
+      "brier": 0.1349889822595705,
+      "brier_ci": [
+       0.11394901027077499,
+       0.15687548552754435
+      ],
+      "ece_shown_not_claimed": 0.015863678804855223,
+      "exact_one_share": 0.43977591036414565,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 0.08269262371615313
+     },
+     "opus-low": {
+      "accuracy": 0.9444444444444444,
+      "accuracy_ci": [
+       0.8981481481481481,
+       0.9814814814814815
+      ],
+      "brier": 0.08947274074074076,
+      "brier_ci": [
+       0.050825121643518524,
+       0.13622663530092594
+      ],
+      "ece_shown_not_claimed": 0.06354629629629627,
+      "exact_one_share": 0.0,
+      "status_rates": {
+       "ok": 1.0
+      },
+      "cost_per_1000_usd": 8.895481481481482
+     }
+    },
+    "pairs": {
+     "jev vs decisions": {
+      "accuracy_diff": 0.0392156862745098,
+      "accuracy_diff_ci": [
+       0.022408963585434174,
+       0.056022408963585436
+      ],
+      "only_first_right": 64,
+      "only_second_right": 22,
+      "mcnemar_p": 6.5442273311708145e-06,
+      "brier_diff": -0.0443643003519811,
+      "brier_diff_ci": [
+       -0.060709464563297004,
+       -0.02860846567753381
+      ],
+      "mcnemar_p_holm": 6.5442273311708145e-06,
+      "accuracy_claim": true,
+      "brier_claim": true
+     },
+     "jev vs opus-low": {
+      "accuracy_diff": -0.018518518518518517,
+      "accuracy_diff_ci": [
+       -0.06481481481481481,
+       0.027777777777777776
+      ],
+      "only_first_right": 2,
+      "only_second_right": 4,
+      "mcnemar_p": 0.6875,
+      "brier_diff": 0.0425865185185185,
+      "brier_diff_ci": [
+       -0.004897941898148151,
+       0.09737816435185184
+      ],
+      "mcnemar_p_holm": 0.6875,
+      "accuracy_claim": false,
+      "brier_claim": false
+     },
+     "decisions vs opus-low": {
+      "accuracy_diff": -0.12037037037037036,
+      "accuracy_diff_ci": [
+       -0.19444444444444445,
+       -0.046296296296296294
+      ],
+      "only_first_right": 3,
+      "only_second_right": 16,
+      "mcnemar_p": 0.004425048828125,
+      "brier_diff": 0.12972725925925926,
+      "brier_diff_ci": [
+       0.05707539039351852,
+       0.2102000412037037
+      ],
+      "mcnemar_p_holm": 0.013275146484375,
+      "accuracy_claim": true,
+      "brier_claim": true
+     }
+    },
+    "sampled": {
+     "opus-low": {
+      "n": 108,
+      "of": 1071
+     }
+    }
+   }
+  },
+  "latency": {
+   "jev": {
+    "n": 600,
+    "p50_s": 0.2185570835135877,
+    "p95_s": 0.32314794763224186,
+    "p50_ci": [
+     0.2157386455219239,
+     0.2220458744559437
+    ],
+    "p95_ci": [
+     0.3074503748677667,
+     0.3646081091254018
+    ]
+   },
+   "decisions": {
+    "n": 600,
+    "p50_s": 0.27377220848575234,
+    "p95_s": 0.4891933044884352,
+    "p50_ci": [
+     0.26830506254918873,
+     0.2790082920109853
+    ],
+    "p95_ci": [
+     0.4437271524220705,
+     0.5214616204379127
+    ]
+   },
+   "opus-low": {
+    "n": 82,
+    "p50_s": 4.088154103956185,
+    "p95_s": 6.8088780982885515,
+    "p50_ci": [
+     3.9079930420266464,
+     4.206171249970794
+    ],
+    "p95_ci": [
+     6.510304127039854,
+     7.221956929576118
+    ]
+   }
+  },
+  "totals": {
+   "T1": {
+    "jev": {
+     "calls": 1000,
+     "elapsed_s": 241.032,
+     "cost_usd": 0.04579298
+    },
+    "decisions": {
+     "calls": 1000,
+     "elapsed_s": 260.751,
+     "cost_usd": 0.0734247
+    },
+    "opus-low": {
+     "calls": 100,
+     "elapsed_s": 645.214,
+     "cost_usd": 2.40296
+    }
+   },
+   "T2": {
+    "jev": {
+     "calls": 2000,
+     "elapsed_s": 481.692,
+     "cost_usd": 0.07373558
+    },
+    "decisions": {
+     "calls": 2000,
+     "elapsed_s": 515.801,
+     "cost_usd": 0.1099604
+    },
+    "opus-low": {
+     "calls": 200,
+     "elapsed_s": 805.001,
+     "cost_usd": 3.046468
+    }
+   },
+   "T3": {
+    "jev": {
+     "calls": 1999,
+     "elapsed_s": 562.23,
+     "cost_usd": 0.22803736
+    },
+    "decisions": {
+     "calls": 1999,
+     "elapsed_s": 711.447,
+     "cost_usd": 0.2487323
+    },
+    "opus-low": {
+     "calls": 199,
+     "elapsed_s": 823.195,
+     "cost_usd": 3.732792
+    }
+   },
+   "T4": {
+    "jev": {
+     "calls": 1000,
+     "elapsed_s": 251.968,
+     "cost_usd": 0.10701949
+    },
+    "decisions": {
+     "calls": 1000,
+     "elapsed_s": 252.851,
+     "cost_usd": 0.139481
+    },
+    "opus-low": {
+     "calls": 100,
+     "elapsed_s": 248.533,
+     "cost_usd": 2.244848
+    }
+   },
+   "T5": {
+    "jev": {
+     "calls": 1071,
+     "elapsed_s": 262.734,
+     "cost_usd": 0.0551872
+    },
+    "decisions": {
+     "calls": 1071,
+     "elapsed_s": 281.592,
+     "cost_usd": 0.0885638
+    },
+    "opus-low": {
+     "calls": 108,
+     "elapsed_s": 333.981,
+     "cost_usd": 0.960712
+    }
+   }
+  },
+  "labels": {
+   "T1": "Customer-support routing",
+   "T2": "Text input",
+   "T3": "Photo input",
+   "T4": "Intent, with off-topic messages",
+   "T5": "Decision Bench, text and image"
+  }
+ }
+}

@@ -185,3 +185,10 @@ def test_a_sampled_system_is_merged_into_results_with_its_sample_size(tmp_path):
     assert t["pairs"]["jev vs opus-low"] == {"accuracy_claim": False}
     assert t["sampled"] == {"opus-low": {"n": 100, "of": 1000}}
     assert "sample" not in t
+
+
+def test_the_spotlight_can_show_a_short_question_from_the_config(tmp_path):
+    cfg = config()
+    cfg["spotlight"]["question"] = "Which is it?"
+    assert build(tmp_path, cfg=cfg)["spotlight"]["question"] == "Which is it?"
+    assert build(tmp_path / "b")["spotlight"]["question"] == "Which?"  # the item's own wording otherwise

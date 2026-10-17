@@ -89,7 +89,8 @@ def build_spotlight(spec: dict, items: list[Item], records: list[dict], systems:
         conf = a["probs"].get(label) if a and a.get("probs") else None
         picks.append({"system": s["id"], "label": label, "confidence": conf, "correct": item.is_correct(q.name, label),
                       "status": r["status"] if r else "missing"})
-    return {"item_id": item.id, "test": spec["test"], "text": _preview(item.text), "question": q.instructions,
+    # a short question for the screen may be set in the config; the item's full wording is in the logs
+    return {"item_id": item.id, "test": spec["test"], "text": _preview(item.text), "question": spec.get("question") or q.instructions,
             "gold": item.gold[q.name], "image": str(dest.relative_to(out_dir)),
             "image_licence": spec["licences"][item.source["task"]], "image_source": item.source.get("task", ""),
             "picks": picks}
