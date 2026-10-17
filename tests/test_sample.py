@@ -116,3 +116,16 @@ def test_export_strips_amazon_text_and_t2_t3_requests(tmp_path):
     everything = "".join(p.read_text() for p in out.rglob("*.jsonl"))
     assert "Secret listing text" not in everything and "example.com" not in everything
     assert "public text" in everything and "sha256" in everything
+
+
+def test_amazon_extension_keeps_the_first_draw_and_adds_only_new_test_products():
+    rows = [amazon_row(f"B{k:03d}", cat=("Light Switches", "Outlets", "Fuses")[k % 3]) for k in range(200)]
+    pool = sample.amazon_pool(rows)
+    first = sample.amazon_draw(pool, n_test=40, n_dev=5)
+    taken = {r["parent_asin"] for r in first}
+    more = sample.amazon_extend(pool, taken, 40)
+    assert len(more) == 40 and not taken & {r["parent_asin"] for r in more}
+    assert more == sample.amazon_extend(pool, taken, 40)  # seeded
+    assert sample.amazon_draw(pool, n_test=40, n_dev=5) == first  # the first draw is untouched
+    items, _ = sample.t2_t3_amazon(pool, more, n_test=len(more))
+    assert {i.split for i in items} == {"test"}

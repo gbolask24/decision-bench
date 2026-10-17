@@ -137,7 +137,7 @@ def _stamp(record: dict, item: Item, mode: str, repeat: int, warmup: bool = Fals
 
 
 def run_accuracy(items: list[Item], arms: list[str], data_dir: Path, log: Log, workers: int = 8,
-                 repeats: int = 1, seed: int = 1017) -> int:
+                 repeats: int = 1, seed: int = 1017, on_record=None) -> int:
     done = log.done()
     jobs = [(i, a, r) for i in items for a in arms for r in range(repeats)
             if ("accuracy", i.id, a, r, False) not in done]
@@ -145,7 +145,10 @@ def run_accuracy(items: list[Item], arms: list[str], data_dir: Path, log: Log, w
 
     def work(job):
         item, arm, rep = job
-        log.write(_stamp(call(arm, item, data_dir), item, "accuracy", rep))
+        rec = _stamp(call(arm, item, data_dir), item, "accuracy", rep)
+        log.write(rec)
+        if on_record:
+            on_record(rec)
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         list(ex.map(work, jobs))

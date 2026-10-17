@@ -158,6 +158,13 @@ def amazon_draw(pool: list[dict], n_test: int = 1000, n_dev: int = 50, seed: int
     return random.Random(seed).sample(pool, n_test + n_dev)
 
 
+def amazon_extend(pool: list[dict], taken: set[str], n: int, seed: int = SEED) -> list[dict]:
+    """More test products, drawn by their own seed from the pool minus those already drawn,
+    so the first draw (and its dev items) stays exactly as it was."""
+    rest = [r for r in pool if r["parent_asin"] not in taken]
+    return random.Random(f"{seed}:extend").sample(rest, n)
+
+
 def t2_t3_amazon(pool: list[dict], draw: list[dict], n_test: int = 1000, seed: int = SEED,
                  image_paths: dict[str, Image] | None = None) -> tuple[list[Item], list[str]]:
     """T2 is text only; T3 is the same products and options with the main image. A product whose

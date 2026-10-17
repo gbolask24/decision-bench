@@ -8,7 +8,7 @@ from pathlib import Path
 
 from . import run as runner
 from . import sample, score
-from .items import read_items, sha256_file, write_items
+from .items import Image, read_items, sha256_file, write_items
 
 TASKS = {  # task -> question scored as primary (None = each item's own question)
     "T1": "intent", "T2": "category", "T3": "category", "T4": "intent", "T5": None,
@@ -43,14 +43,18 @@ def cmd_sample(a):
         exclude = frozenset(Path(a.exclude).read_text().split()) if a.exclude else frozenset()
         pool = sample.amazon_pool(sample.stream_jsonl_gz(a.amazon or sample.AMAZON_URL), exclude)
         draw = sample.amazon_draw(pool)
+        more = sample.amazon_extend(pool, {r["parent_asin"] for r in draw}, a.extend) if a.extend else []
         images, failed = {}, []
-        for r in draw:
+        for r in draw + more:
             asin = r["parent_asin"]
+            dest = data / "images" / "T3" / f"{asin}.jpg"
             try:
-                images[asin] = sample.fetch_image(sample.main_image(r), data / "images" / "T3" / f"{asin}.jpg", data)
+                images[asin] = (Image(str(dest.relative_to(data)), "image/jpeg", sha256_file(dest)) if dest.exists()
+                                else sample.fetch_image(sample.main_image(r), dest, data))
             except Exception as e:  # a dead link drops the product from T3 only; it is reported
                 failed.append(f"{asin} {type(e).__name__}")
         items, cats = sample.t2_t3_amazon(pool, draw, image_paths=images)
+        items += sample.t2_t3_amazon(pool, more, n_test=len(more), image_paths=images)[0]
         (data / "items").mkdir(parents=True, exist_ok=True)
         (data / "items" / "T2-categories.txt").write_text("\n".join(cats) + "\n")
         (data / "items" / "T3-image-failures.txt").write_text("\n".join(failed) + ("\n" if failed else ""))
@@ -94,8 +98,8 @@ def cmd_fit_images(a):
     print("re-run `python -m dbench manifest` so the manifest matches")
 
 
-def _items(a, split):
-    its = [i for i in read_items(items_path(Path(a.data), a.task)) if i.split == split]
+def _items(a, split, task=None):
+    its = [i for i in read_items(items_path(Path(a.data), task or a.task)) if i.split == split]
     return its[: a.limit] if getattr(a, "limit", None) else its
 
 
@@ -123,10 +127,43 @@ def cmd_probe(a):
 
 def cmd_run(a):
     load_env()
-    items = _items(a, a.split)
-    n = runner.run_accuracy(items, a.arms.split(","), Path(a.data), runner.Log(Path(a.log)),
-                            workers=a.workers, repeats=a.repeats)
-    print(f"{n} calls written to {a.log}")
+    tasks, arms = a.task.split(","), a.arms.split(",")
+    unknown = [t for t in tasks if t not in TASKS]
+    if unknown:
+        raise SystemExit(f"run: unknown test {', '.join(unknown)}")
+    by_task = {t: _items(a, a.split, t) for t in tasks}
+    items = [i for its in by_task.values() for i in its]
+    if not a.run:
+        n = runner.run_accuracy(items, arms, Path(a.data), runner.Log(Path(a.log)), workers=a.workers, repeats=a.repeats)
+        print(f"{n} calls written to {a.log}")
+        return
+    import threading
+    import time
+    from .live import Run, RunStats
+    run = Run.start(Path(a.runs_root), a.run, {"split": a.split, "tasks": tasks, "arms": arms, "repeats": a.repeats,
+                                                "workers": a.workers, "command": " ".join(["python -m dbench"] + sys.argv[1:])})
+    stats = RunStats(by_task, {t: TASKS[t] for t in tasks}, arms, a.repeats)
+    if run.calls.exists():
+        for line in run.calls.read_text().splitlines():
+            stats.add(json.loads(line))
+    run.write_summary(stats)
+    lock, last = threading.Lock(), [0.0]
+
+    def on_record(rec):
+        with lock:
+            stats.add(rec)
+            if time.monotonic() - last[0] >= 2:
+                run.write_summary(stats)
+                last[0] = time.monotonic()
+
+    try:
+        n = runner.run_accuracy(items, arms, Path(a.data), runner.Log(run.calls), workers=a.workers,
+                                repeats=a.repeats, on_record=on_record)
+    except BaseException:
+        run.finish(stats, "stopped")
+        raise
+    run.finish(stats)
+    print(f"{n} calls written to {run.calls}")
 
 
 def cmd_latency(a):
@@ -205,6 +242,8 @@ def main(argv=None) -> int:
     s.add_argument("task", choices=["T1", "T2T3", "T4", "T5"])
     s.add_argument("--bitext-csv")
     s.add_argument("--amazon", help="local meta_Tools_and_Home_Improvement.jsonl.gz, or the URL (default)")
+    s.add_argument("--extend", type=int, default=1000,
+                   help="T2T3: test products drawn after the first 1,050, by their own seed (pre-registered: 1,000)")
     s.add_argument("--exclude", help="file of parent_asin values to leave out (the SKU-50 items)")
     s.add_argument("--clinc")
     s.add_argument("--bench-repo", default="../atlanai-decision-bench")
@@ -212,7 +251,10 @@ def main(argv=None) -> int:
     m.add_argument("--out", default="manifest.json")
     for name in ("probe", "run"):
         p = sub.add_parser(name)
-        p.add_argument("--task", required=True, choices=list(TASKS))
+        if name == "probe":
+            p.add_argument("--task", required=True, choices=list(TASKS))
+        else:
+            p.add_argument("--task", required=True, help="one test, or several joined by commas: T1,T4")
         p.add_argument("--arms", default="jev,decisions,opus-low")
         if name == "probe":
             p.add_argument("--split", default="dev", choices=["dev", "test"])
@@ -222,7 +264,9 @@ def main(argv=None) -> int:
             p.add_argument("--workers", type=int, default=8)
             p.add_argument("--repeats", type=int, default=1)
             p.add_argument("--limit", type=int)
-            p.add_argument("--log", default="logs/accuracy.jsonl")
+            p.add_argument("--log", default="logs/accuracy.jsonl", help="used only without --run")
+            p.add_argument("--run", help="log into logs/runs/<name>/ with run.json and a live summary.json")
+            p.add_argument("--runs-root", default="logs/runs")
     l = sub.add_parser("latency")
     l.add_argument("--tasks", default="T1,T2,T3,T4,T5")
     l.add_argument("--arms", default="jev,decisions,opus-low")
