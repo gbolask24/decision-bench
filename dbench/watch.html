@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Decision Bench live</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Unbounded:wght@400&display=swap">
+<style>
+/* Layout: one run at a time; totals strip, then one block per test with a row per system, then the call feed. */
+:root {
+  --bg: #000; --fg: #fafafa; --soft: #d4d4d8; --muted: #a1a1aa; --faint: #71717a;
+  --line: rgba(255,255,255,.10); --card: rgba(255,255,255,.03); --chip: rgba(255,255,255,.05);
+  --ok: #4ade80; --bad: #f87171; --warn: #fbbf24;
+  --jev: #e879f9; --decisions: #38bdf8; --opus-low: #d97757; --opus-medium: #e9a184;
+  --body: Inter, ui-sans-serif, system-ui, sans-serif; --mark: Unbounded, var(--body);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 15px/1.45 var(--body);
+  padding: 28px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 28px; }
+.num { font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+header { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; justify-content: space-between; }
+h1 { font: 400 20px/1.2 var(--mark); margin: 0; letter-spacing: -0.01em; }
+.meta { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; color: var(--muted); font-size: 13px; }
+.chip { background: var(--chip); border: 1px solid var(--line); border-radius: 999px; padding: 4px 10px; white-space: nowrap; }
+.pill { border-radius: 999px; padding: 4px 10px; font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.pill.running { background: rgba(74,222,128,.15); color: var(--ok); }
+.pill.complete { background: var(--chip); color: var(--soft); }
+.pill.stopped, .pill.stalled { background: rgba(248,113,113,.15); color: var(--bad); }
+select { background: var(--card); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; padding: 6px 10px; font: inherit; }
+select:focus-visible { outline: 2px solid var(--decisions); outline-offset: 2px; }
+.totals { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+#tests { display: grid; gap: 28px; }
+.tile { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 16px 18px; display: grid; gap: 4px; }
+.tile .v { font-size: 26px; font-weight: 500; white-space: nowrap; }
+.tile .v .dim { font-size: 17px; }
+.tile .l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.bar { height: 6px; background: var(--chip); border-radius: 999px; overflow: hidden; }
+.bar > i { display: block; height: 100%; background: var(--soft); border-radius: inherit; }
+section.test { display: grid; gap: 10px; }
+section.test h2 { margin: 0; font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 18px; background: var(--card); }
+table { border-collapse: collapse; width: 100%; min-width: 860px; }
+th, td { padding: 12px 14px; text-align: right; white-space: nowrap; }
+th { color: var(--faint); font-weight: 500; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; border-bottom: 1px solid var(--line); }
+td { border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+th:first-child, td:first-child { text-align: left; }
+td.sys { display: flex; align-items: center; gap: 10px; font-weight: 500; }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+td.prog { min-width: 180px; }
+td.prog .bar { margin-top: 6px; }
+.right { font-size: 18px; font-weight: 600; }
+.bad { color: var(--bad); }
+.dim { color: var(--faint); }
+.feeds { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.feed { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 14px 16px; min-width: 0; }
+.feed h2 { margin: 0 0 8px; font-size: 13px; font-weight: 500; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
+.feed ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: 13px; }
+.feed li { display: grid; grid-template-columns: 64px 34px 1fr auto; gap: 8px; align-items: baseline; min-width: 0; }
+.feed li .id { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--soft); }
+.feed li .detail { grid-column: 2 / -1; color: var(--faint); overflow-wrap: anywhere; }
+.empty { color: var(--faint); padding: 24px; text-align: center; }
+footer { color: var(--faint); font-size: 12px; }
+@media (prefers-reduced-motion: no-preference) { .bar > i { transition: width .6s ease-out; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div style="display:grid;gap:8px">
+      <h1>Decision Bench live</h1>
+      <div class="meta" id="meta"></div>
+    </div>
+    <label class="meta">Run <select id="run" aria-label="Run"></select></label>
+  </header>
+  <div class="totals" id="totals"></div>
+  <div id="tests"><div class="empty">No runs yet. Start one with <code>python -m dbench run --task T1 --run NAME</code>.</div></div>
+  <div class="feeds">
+    <div class="feed"><h2>Last calls</h2><ol id="recent"></ol></div>
+    <div class="feed"><h2>Failures</h2><ol id="errors"></ol></div>
+  </div>
+  <footer>Percent right is a running count against each dataset's gold labels, before the T2 accept list and the scorer's intervals. The scorer's numbers are the result. Updates every 2 seconds.</footer>
+</div>
+<script>
+const NAMES = { jev: "Jev 1.14", decisions: "OpenAI Decisions API", "opus-low": "Claude Opus 5.5 (low)", "opus-medium": "Claude Opus 5.5 (medium)" };
+const TESTS = { T1: "T1 Customer-support routing", T2: "T2 Product category, text", T3: "T3 Product category, photo",
+                T4: "T4 Intent, with off-topic messages", T5: "T5 Decision Bench, text and image" };
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? "").replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const n = (x) => (x ?? 0).toLocaleString("en-GB");
+const pct = (x, d = 1) => (x == null ? "–" : (x * 100).toFixed(d) + "%");
+const usd = (x) => (x == null ? "–" : x >= 1 ? "$" + x.toFixed(2) : x >= 0.01 ? "$" + x.toFixed(3) : "$" + x.toPrecision(2));
+const secs = (x) => (x == null ? "–" : x < 10 ? x.toFixed(2) + " s" : x.toFixed(1) + " s");
+const dur = (s) => { if (s == null) return "–"; s = Math.round(s); const h = Math.floor(s / 3600), m = Math.floor(s % 3600 / 60);
+  return h ? `${h} h ${m} min` : m ? `${m} min ${s % 60} s` : `${s} s`; };
+const tok = (x) => (x >= 1e6 ? (x / 1e6).toFixed(2) + "M" : x >= 1e3 ? (x / 1e3).toFixed(1) + "k" : n(x));
+const colour = (arm) => `var(--${arm}, var(--soft))`;
+const clock = (ts) => (ts ? new Date(ts).toLocaleTimeString("en-GB") : "");
+
+let current = null;
+
+async function loadRuns() {
+  const runs = await (await fetch("/api/runs")).json();
+  const sel = $("run");
+  const keep = current || location.hash.slice(1) || (runs[0] && runs[0].name);
+  sel.innerHTML = runs.map((r) => `<option value="${esc(r.name)}">${esc(r.name)} · ${esc(r.status)}</option>`).join("");
+  if (keep) { sel.value = keep; current = sel.value || null; }
+}
+
+function status(s) {
+  const age = (Date.now() - new Date(s.updated_at)) / 1000;
+  if (s.run.status === "running" && age > 60) return ["stalled", `No calls for ${dur(age)}`];
+  return [s.run.status, s.run.status];
+}
+
+function render(s) {
+  const [cls, label] = status(s);
+  const started = s.run.started_at ? new Date(s.run.started_at) : null;
+  const end = s.run.ended_at ? new Date(s.run.ended_at) : new Date(s.updated_at);
+  $("meta").innerHTML = [
+    `<span class="pill ${cls}">${esc(label)}</span>`,
+    `<span class="chip">${esc(s.run.split)} items</span>`,
+    started ? `<span class="chip">Started ${started.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</span>` : "",
+    started ? `<span class="chip num">Ran ${dur((end - started) / 1000)}</span>` : "",
+    s.run.commit ? `<span class="chip num">Commit ${esc(s.run.commit.slice(0, 7))}${s.run.dirty ? " + edits" : ""}</span>` : "",
+  ].join("");
+  const rate = s.rows.reduce((a, r) => a + r.per_min, 0);
+  const left = Math.max(0, ...s.rows.map((r) => r.eta_s || 0));
+  const inT = s.rows.reduce((a, r) => a + r.input_tokens, 0), outT = s.rows.reduce((a, r) => a + r.output_tokens, 0);
+  $("totals").innerHTML = [
+    [`${n(s.done_total)} <span class="dim">/ ${n(s.planned_total)}</span>`, "Calls", s.done_total / (s.planned_total || 1)],
+    [usd(s.cost_total_usd), s.run.status === "running" ? "Spent so far" : "Spent"],
+    [`<span class="${s.failed_total ? "bad" : ""}">${n(s.failed_total)}</span>`, "Failed calls"],
+    [`${tok(inT)} <span class="dim">/ ${tok(outT)}</span>`, "Tokens in / out"],
+    ...(s.run.status === "running"
+      ? [[n(rate), "Calls a minute"], [dur(left || null), "Time left"]]
+      : [[n(Math.round(s.done_total / Math.max((end - started) / 60000, 1 / 60))), "Calls a minute, average"]]),
+  ].map(([v, l, p]) => `<div class="tile"><div class="v num">${v}</div><div class="l">${l}</div>${p != null ? `<div class="bar"><i style="width:${(p * 100).toFixed(1)}%"></i></div>` : ""}</div>`).join("");
+  const byTest = {};
+  for (const r of s.rows) (byTest[r.task] ||= []).push(r);
+  $("tests").innerHTML = Object.entries(byTest).map(([t, rows]) => `
+    <section class="test"><h2>${esc(TESTS[t] || t)}</h2><div class="tablewrap"><table>
+      <thead><tr><th>System</th><th>Calls</th><th>Right so far</th><th>Failed</th><th>Median</th><th>Slowest 5%</th>
+        <th>Tokens in</th><th>Tokens out</th><th>Spent</th><th>A minute</th><th>Left</th></tr></thead>
+      <tbody>${rows.map((r) => {
+        const failed = Object.entries(r.failed).map(([k, v]) => `${v} ${k.replace("_", " ")}`).join(", ");
+        return `<tr>
+          <td class="sys"><span class="dot" style="background:${colour(r.arm)}"></span>${esc(NAMES[r.arm] || r.arm)}</td>
+          <td class="prog num">${n(r.done)} <span class="dim">/ ${n(r.planned)}</span>
+            <div class="bar"><i style="width:${(r.done / (r.planned || 1) * 100).toFixed(1)}%;background:${colour(r.arm)}"></i></div></td>
+          <td class="num right" style="color:${colour(r.arm)}">${pct(r.pct_right)}</td>
+          <td class="num ${failed ? "bad" : "dim"}">${failed || "0"}</td>
+          <td class="num">${secs(r.p50_s)}</td><td class="num">${secs(r.p95_s)}</td>
+          <td class="num">${tok(r.input_tokens)}</td><td class="num">${tok(r.output_tokens)}</td>
+          <td class="num">${usd(r.cost_usd)}</td><td class="num">${n(r.per_min)}</td>
+          <td class="num dim">${r.done >= r.planned ? "done" : dur(r.eta_s)}</td></tr>`;
+      }).join("")}</tbody></table></div></section>`).join("") || `<div class="empty">This run has no calls yet.</div>`;
+  const line = (c, detail) => `<li><span class="num dim">${clock(c.ts)}</span><span class="num">${esc(c.task)}</span>
+    <span class="id"><span class="dot" style="display:inline-block;margin-right:6px;background:${colour(c.arm)}"></span>${esc(c.item_id)}</span>
+    <span class="num ${c.status !== "ok" ? "bad" : c.correct ? "" : "dim"}">${c.status !== "ok" ? esc(c.status) : c.correct ? "right" : "wrong"} · ${secs(c.elapsed_s)}</span>
+    ${detail ? `<span class="detail">${esc(c.detail)}</span>` : ""}</li>`;
+  $("recent").innerHTML = s.recent.map((c) => line(c, false)).join("") || `<li class="dim">None yet</li>`;
+  $("errors").innerHTML = s.errors.map((c) => line(c, true)).join("") || `<li class="dim">None</li>`;
+}
+
+async function tick() {
+  try {
+    await loadRuns();
+    if (current) {
+      const r = await fetch("/api/summary?run=" + encodeURIComponent(current));
+      if (r.ok) render(await r.json());
+    }
+  } catch (e) { $("meta").innerHTML = `<span class="pill stalled">Can't reach the watch server</span>`; }
+}
+$("run").addEventListener("change", (e) => { current = e.target.value; location.hash = current; tick(); });
+tick();
+setInterval(tick, 2000);
+</script>
+</body>
+</html>

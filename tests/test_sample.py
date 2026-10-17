@@ -129,3 +129,21 @@ def test_amazon_extension_keeps_the_first_draw_and_adds_only_new_test_products()
     assert sample.amazon_draw(pool, n_test=40, n_dev=5) == first  # the first draw is untouched
     items, _ = sample.t2_t3_amazon(pool, more, n_test=len(more))
     assert {i.split for i in items} == {"test"}
+
+
+def test_export_of_a_run_folder_splits_calls_by_test_and_keeps_run_files(tmp_path):
+    from dbench.export import export
+    data = tmp_path / "data"
+    (data / "items").mkdir(parents=True)
+    run = tmp_path / "runs" / "test-1"
+    run.mkdir(parents=True)
+    (run / "calls.jsonl").write_text(
+        json.dumps({"task": "T3", "payload": {"state": "Secret listing text"}, "status": "ok"}) + "\n"
+        + json.dumps({"task": "T1", "payload": {"state": "public text"}, "status": "ok"}) + "\n")
+    (run / "run.json").write_text('{"name": "test-1"}')
+    (run / "summary.json").write_text('{"done_total": 2}')
+    out = tmp_path / "public"
+    export(data, [run / "calls.jsonl"], out)
+    assert sorted(p.name for p in (out / "logs" / "test-1").iterdir()) == ["T1.jsonl", "T3.jsonl", "run.json", "summary.json"]
+    assert "Secret listing text" not in (out / "logs" / "test-1" / "T3.jsonl").read_text()
+    assert "public text" in (out / "logs" / "test-1" / "T1.jsonl").read_text()

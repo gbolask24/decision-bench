@@ -33,7 +33,23 @@ def export(data: Path, logs: list[Path], out: Path) -> list[Path]:
     (out / "logs").mkdir(parents=True, exist_ok=True)
     for f in logs:
         rows = [public_record(json.loads(l)) for l in f.read_text().splitlines() if l.strip()]
-        dest = out / "logs" / f.name
-        dest.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
-        written.append(dest)
+        if f.name != "calls.jsonl":
+            dest = out / "logs" / f.name
+            dest.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rows))
+            written.append(dest)
+            continue
+        # a run folder: one file per test keeps each under GitHub's file size limit; run.json and summary.json go along
+        folder = out / "logs" / f.parent.name
+        folder.mkdir(parents=True, exist_ok=True)
+        by_task: dict[str, list[dict]] = {}
+        for r in rows:
+            by_task.setdefault(r.get("task", "unknown"), []).append(r)
+        for task, rs in sorted(by_task.items()):
+            dest = folder / f"{task}.jsonl"
+            dest.write_text("".join(json.dumps(r, ensure_ascii=False) + "\n" for r in rs))
+            written.append(dest)
+        for name in ("run.json", "summary.json"):
+            if (f.parent / name).exists():
+                (folder / name).write_bytes((f.parent / name).read_bytes())
+                written.append(folder / name)
     return written

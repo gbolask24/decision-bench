@@ -123,3 +123,48 @@ def test_run_command_logs_into_the_run_folder_and_keeps_the_summary(tmp_path, mo
     assert main(args) == 0  # a second run with the same name resumes: nothing left to call
     assert len((folder / "calls.jsonl").read_text().splitlines()) == 12
     assert json.loads((folder / "run.json").read_text())["resumed"] == 1
+
+
+def _run_with_calls(tmp_path):
+    from dbench.__main__ import items_path
+    from dbench.items import write_items
+    data = tmp_path / "data"
+    its = items(3)
+    for i in its:
+        i.split = "dev"
+    write_items(items_path(data, "T1"), its)
+    run = live.Run.start(tmp_path / "runs", "pilot", {"split": "dev", "tasks": ["T1"], "arms": ["jev"], "repeats": 1})
+    run.calls.write_text("".join(json.dumps(rec(i.id, "jev")) + "\n" for i in its[:2]))
+    return data, run
+
+
+def test_summary_command_rebuilds_the_summary_from_the_calls(tmp_path):
+    from dbench.__main__ import main
+    data, run = _run_with_calls(tmp_path)
+    assert main(["--data", str(data), "summary", "--run", "pilot", "--runs-root", str(tmp_path / "runs")]) == 0
+    s = json.loads((run.folder / "summary.json").read_text())
+    assert s["done_total"] == 2 and s["planned_total"] == 3
+
+
+def test_watch_serves_the_page_runs_and_summaries(tmp_path):
+    import threading
+    import urllib.request
+    from dbench.__main__ import main
+    from dbench.watch import make_server
+    data, run = _run_with_calls(tmp_path)
+    main(["--data", str(data), "summary", "--run", "pilot", "--runs-root", str(tmp_path / "runs")])
+    srv = make_server(tmp_path / "runs", port=0)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    base = f"http://127.0.0.1:{srv.server_address[1]}"
+    try:
+        assert b"<title>" in urllib.request.urlopen(base + "/").read()
+        assert [r["name"] for r in json.loads(urllib.request.urlopen(base + "/api/runs").read())] == ["pilot"]
+        s = json.loads(urllib.request.urlopen(base + "/api/summary?run=pilot").read())
+        assert s["done_total"] == 2
+        try:
+            urllib.request.urlopen(base + "/api/summary?run=../../etc")
+            raise AssertionError("path outside the runs folder was served")
+        except urllib.error.HTTPError as e:
+            assert e.code == 404
+    finally:
+        srv.shutdown()

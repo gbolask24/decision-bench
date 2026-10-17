@@ -18,7 +18,7 @@ The primary comparison is between jev, decisions and opus-low. opus-medium is re
 | Test | Test items | Dev items | Primary metric | Secondary |
 |---|---|---|---|---|
 | T1 Bitext routing | 1,000 | 100 | Intent accuracy | Category accuracy; Brier (intent) |
-| T2 Amazon category, text | 1,000 | 50 | Accuracy | Brier |
+| T2 Amazon category, text | 2,000 | 50 | Accuracy | Brier |
 | T3 Amazon category, text and image | the T2 products with an image | 50 | Accuracy | T3 minus T2 per arm |
 | T4 CLINC150 | 1,000 (200 out of scope) | 100 | Accuracy | Out-of-scope false-accept rate |
 | T5 Decision Bench bench-v4 | 1,071 | none | Accuracy | Brier; image rows separately |
@@ -40,7 +40,7 @@ Gold labels are the datasets' own. T2 and T3 also count as correct any category 
 
 ## Power
 
-At 1,000 independent items, 80% power, and a correction for three comparisons, the smallest detectable accuracy gap is about 3 to 4 points, assuming the arms disagree on 15 to 20% of items. Pilot on the dev splits, 17 October 2026 (100 T1, 50 T2, 50 T3 and 100 T4 items, all three systems, 900 calls, all status ok; `scripts/pilot_score.py`): the systems disagreed on 2 to 15% of items, depending on the pair and test, below the 15 to 20% assumed above. At 1,000 items the smallest detectable gap is therefore 1.4 to 4.0 points: about 2 to 2.5 points on T2 and T3, where the pilot races were closest, and up to 4.0 points on T4. Decision: every test stays at 1,000 items. Doubling T2 and T3 to 2,000 would only move their detectable gap from about 2.5 to 1.8 points, which is inside the label noise the T2 audit is checking for. A gap below the detectable size is reported as no detectable difference, never as a tie or a win.
+At 1,000 independent items, 80% power, and a correction for three comparisons, the smallest detectable accuracy gap is about 3 to 4 points, assuming the arms disagree on 15 to 20% of items. Pilot on the dev splits, 17 October 2026 (100 T1, 50 T2, 50 T3 and 100 T4 items, all three systems, 900 calls, all status ok; `scripts/pilot_score.py`): the systems disagreed on 2 to 15% of items, depending on the pair and test, below the 15 to 20% assumed above. At 1,000 items the smallest detectable gap is therefore 1.4 to 4.0 points: about 2 to 2.5 points on T2 and T3, where the pilot races were closest, and up to 4.0 points on T4. Decision, made after the pilot and before the tag: T2 and T3 go to 2,000 test items, because their races were the closest; at 2,000 the smallest detectable gap there is about 1.4 to 1.8 points. The first draw of 1,050 products (1,000 test, 50 dev) is kept exactly; 1,000 more test products are drawn from the rest of the pool with their own seed (`amazon_extend`, seed "1017:extend"), so no dev or probe item changed. T3 has 1,999 because one product's image link is dead (`data/items/T3-image-failures.txt`). T1 and T4 stay at 1,000 and T5 at 1,071. A gap below the detectable size is reported as no detectable difference, never as a tie or a win.
 
 ## Stopping rule
 

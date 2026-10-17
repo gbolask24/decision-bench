@@ -1,4 +1,4 @@
-"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export, replay."""
+"""python -m dbench <command>. Commands: sample, manifest, probe, run, latency, score, export, replay, summary, watch."""
 from __future__ import annotations
 
 import argparse
@@ -139,13 +139,10 @@ def cmd_run(a):
         return
     import threading
     import time
-    from .live import Run, RunStats
+    from .live import Run
     run = Run.start(Path(a.runs_root), a.run, {"split": a.split, "tasks": tasks, "arms": arms, "repeats": a.repeats,
                                                 "workers": a.workers, "command": " ".join(["python -m dbench"] + sys.argv[1:])})
-    stats = RunStats(by_task, {t: TASKS[t] for t in tasks}, arms, a.repeats)
-    if run.calls.exists():
-        for line in run.calls.read_text().splitlines():
-            stats.add(json.loads(line))
+    stats = _run_stats(run, Path(a.data))
     run.write_summary(stats)
     lock, last = threading.Lock(), [0.0]
 
@@ -164,6 +161,34 @@ def cmd_run(a):
         raise
     run.finish(stats)
     print(f"{n} calls written to {run.calls}")
+
+
+def _run_stats(run, data: Path):
+    from .live import RunStats
+    m = run.meta()
+    by_task = {t: [i for i in read_items(items_path(data, t)) if i.split == m.get("split", "test")] for t in m["tasks"]}
+    stats = RunStats(by_task, {t: TASKS[t] for t in m["tasks"]}, m["arms"], m.get("repeats", 1))
+    if run.calls.exists():
+        for line in run.calls.read_text().splitlines():
+            stats.add(json.loads(line))
+    return stats
+
+
+def cmd_summary(a):
+    from .live import Run
+    run = Run(Path(a.runs_root) / a.run)
+    s = run.write_summary(_run_stats(run, Path(a.data)))
+    print(f"{run.folder / 'summary.json'}: {s['done_total']} of {s['planned_total']} calls, ${s['cost_total_usd']:.2f}")
+
+
+def cmd_watch(a):
+    from .watch import make_server
+    srv = make_server(Path(a.runs_root), a.port)
+    print(f"Watching {a.runs_root} at http://127.0.0.1:{srv.server_address[1]}  (Ctrl+C to stop)")
+    try:
+        srv.serve_forever()
+    except KeyboardInterrupt:
+        pass
 
 
 def cmd_latency(a):
@@ -283,6 +308,12 @@ def main(argv=None) -> int:
     e.add_argument("--out", default="public")
     fi = sub.add_parser("fit-images", help="pad or shrink images to Jev's 280-1568 px limits; same file for every system")
     fi.add_argument("--tasks", nargs="+", default=["T3", "T5"])
+    sm = sub.add_parser("summary", help="rebuild a run's summary.json from its calls")
+    sm.add_argument("--run", required=True)
+    sm.add_argument("--runs-root", default="logs/runs")
+    w = sub.add_parser("watch", help="local page that follows runs live")
+    w.add_argument("--runs-root", default="logs/runs")
+    w.add_argument("--port", type=int, default=8765)
     rp = sub.add_parser("replay", help="write replay.json for a race video")
     rp.add_argument("--config", required=True)
     rp.add_argument("--logs", nargs="+", default=["logs/accuracy.jsonl"])
@@ -291,7 +322,7 @@ def main(argv=None) -> int:
     a = ap.parse_args(argv)
     return {"sample": cmd_sample, "manifest": cmd_manifest, "probe": cmd_probe, "run": cmd_run,
             "latency": cmd_latency, "score": cmd_score, "export": cmd_export, "replay": cmd_replay,
-            "fit-images": cmd_fit_images}[a.cmd](a) or 0
+            "fit-images": cmd_fit_images, "summary": cmd_summary, "watch": cmd_watch}[a.cmd](a) or 0
 
 
 if __name__ == "__main__":
