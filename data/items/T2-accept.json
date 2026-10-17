@@ -1,0 +1,26 @@
+{
+ "Cords, Adapters & Multi-Outlets": [
+  "Plugs"
+ ],
+ "Electrical Boxes, Conduits & Fittings": [
+  "Wall Plates & Accessories"
+ ],
+ "Home Automation Devices": [
+  "Switches & Dimmers"
+ ],
+ "Outlets & Accessories": [
+  "Plugs",
+  "Wall Plates & Accessories"
+ ],
+ "Plugs": [
+  "Cords, Adapters & Multi-Outlets",
+  "Outlets & Accessories"
+ ],
+ "Switches & Dimmers": [
+  "Home Automation Devices"
+ ],
+ "Wall Plates & Accessories": [
+  "Electrical Boxes, Conduits & Fittings",
+  "Outlets & Accessories"
+ ]
+}
