@@ -40,7 +40,7 @@ Gold labels are the datasets' own. T2 and T3 also count as correct any category 
 
 ## Power
 
-At 1,000 independent items, 80% power, and a correction for three comparisons, the smallest detectable accuracy gap is about 3 to 4 points, assuming the arms disagree on 15 to 20% of items. Pilot disagreement rate on the dev splits: [fill in from the pilot before tagging]. Updated smallest detectable gap: [fill in].
+At 1,000 independent items, 80% power, and a correction for three comparisons, the smallest detectable accuracy gap is about 3 to 4 points, assuming the arms disagree on 15 to 20% of items. Pilot on the dev splits, 17 October 2026 (100 T1, 50 T2, 50 T3 and 100 T4 items, all three systems, 900 calls, all status ok; `scripts/pilot_score.py`): the systems disagreed on 2 to 15% of items, depending on the pair and test, below the 15 to 20% assumed above. At 1,000 items the smallest detectable gap is therefore 1.4 to 4.0 points: about 2 to 2.5 points on T2 and T3, where the pilot races were closest, and up to 4.0 points on T4. Decision: every test stays at 1,000 items. Doubling T2 and T3 to 2,000 would only move their detectable gap from about 2.5 to 1.8 points, which is inside the label noise the T2 audit is checking for. A gap below the detectable size is reported as no detectable difference, never as a tie or a win.
 
 ## Stopping rule
 
