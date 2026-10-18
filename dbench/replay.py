@@ -112,6 +112,26 @@ def build_totals(items_by_task: dict[str, list[Item]], records: list[dict], syst
     return out
 
 
+ANCHOR = "jev"
+
+
+def _estimate(arm: str, primary: dict, sample: dict) -> dict:
+    """A sampled system's whole-test share right, estimated from the same items: the anchor's whole-test score
+    plus the sampled system's lead over the anchor on the sample (its interval from that paired gap). Putting a
+    sample score beside whole-test scores would mix easier or harder items into the gap."""
+    a = dict(sample["arms"][arm])
+    pair = sample.get("pairs", {}).get(f"{ANCHOR} vs {arm}")
+    anchor = primary["arms"].get(ANCHOR)
+    if not pair or not anchor or "accuracy_diff" not in pair:
+        return a
+    gap = -pair["accuracy_diff"]  # the pair is anchor minus sampled system
+    lo, hi = (-x for x in reversed(pair["accuracy_diff_ci"]))
+    a["estimate"] = {"anchor": ANCHOR, "sample_accuracy": a["accuracy"], "same_item_gap": gap}
+    a["accuracy"] = anchor["accuracy"] + gap
+    a["accuracy_ci"] = [max(0.0, anchor["accuracy"] + lo), min(1.0, anchor["accuracy"] + hi)]
+    return a
+
+
 def _merged(task: dict) -> dict:
     """The decision systems from every item, plus each sampled system (Opus) from its sample, with n and of
     so a reader can scale its totals and must label them."""
@@ -120,7 +140,7 @@ def _merged(task: dict) -> dict:
     if not sample:
         return t
     extra = [a for a in sample["arms"] if a not in t["arms"]]
-    t["arms"] = {**t["arms"], **{a: sample["arms"][a] for a in extra}}
+    t["arms"] = {**t["arms"], **{a: _estimate(a, t, sample) for a in extra}}
     t["pairs"] = {**t.get("pairs", {}), **{k: v for k, v in sample.get("pairs", {}).items()
                                            if any(a in k.split(" vs ") for a in extra)}}
     t["sampled"] = {a: {"n": sample["n"], "of": sample["of"]} for a in extra}

@@ -192,3 +192,29 @@ def test_the_spotlight_can_show_a_short_question_from_the_config(tmp_path):
     cfg["spotlight"]["question"] = "Which is it?"
     assert build(tmp_path, cfg=cfg)["spotlight"]["question"] == "Which is it?"
     assert build(tmp_path / "b")["spotlight"]["question"] == "Which?"  # the item's own wording otherwise
+
+
+def test_a_sampled_system_shows_a_whole_test_estimate_anchored_on_jev(tmp_path):
+    s = summary()
+    arm = lambda acc, lo, hi: {"accuracy": acc, "accuracy_ci": [lo, hi], "cost_per_1000_usd": 1.0, "status_rates": {"ok": 1.0}}
+    s["tasks"]["T1"] = {
+        "primary": {"n": 1000, "arms": {"jev": arm(0.882, 0.862, 0.901), "decisions": arm(0.842, 0.82, 0.86)}, "pairs": {}},
+        "sample": {"n": 100, "of": 1000,
+                   "arms": {"jev": arm(0.93, 0.88, 0.97), "decisions": arm(0.87, 0.8, 0.93), "opus-low": arm(0.97, 0.93, 1.0)},
+                   "pairs": {"jev vs opus-low": {"accuracy_diff": -0.04, "accuracy_diff_ci": [-0.09, 0.01], "accuracy_claim": False}}}}
+    r = build_replay(config(), {"T1": t1_items(), "T5": t5_items(tmp_path)}, records(), s, tmp_path, tmp_path / "out")
+    o = r["results"]["tests"]["T1"]["arms"]["opus-low"]
+    assert o["accuracy"] == pytest.approx(0.922)  # Jev's whole-test 88.2% plus Opus's 4.0-point lead on the same items
+    assert o["accuracy_ci"] == pytest.approx([0.872, 0.972])  # Jev's 88.2% plus the same-item gap's interval
+    assert o["estimate"] == {"anchor": "jev", "sample_accuracy": 0.97, "same_item_gap": pytest.approx(0.04)}
+    assert r["results"]["tests"]["T1"]["arms"]["jev"]["accuracy"] == 0.882
+
+
+def test_the_estimate_interval_stays_between_0_and_1():
+    from dbench.replay import _estimate
+    arm = lambda acc: {"accuracy": acc, "accuracy_ci": [acc - 0.05, acc + 0.05]}
+    primary = {"arms": {"jev": arm(0.95)}}
+    sample = {"arms": {"jev": arm(0.93), "opus-low": arm(0.95)},
+              "pairs": {"jev vs opus-low": {"accuracy_diff": -0.02, "accuracy_diff_ci": [-0.08, 0.04]}}}
+    e = _estimate("opus-low", primary, sample)
+    assert e["accuracy_ci"][1] == 1.0 and e["accuracy_ci"][0] == pytest.approx(0.91)
