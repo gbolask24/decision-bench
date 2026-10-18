@@ -1,6 +1,6 @@
 # Decision bench
 
-Jev 1.14 (TypeSafe), OpenAI's Decisions API (GPT-6 Luna) and Claude Opus 5.5 on the same five decision tests, all public data: 1,000 items each on T1 and T4, 2,000 on T2 and T3 (1,999 on T3), 1,071 on T5. Run from London on 17-18 October 2026 by Gbolagade Ishola. Results, items and logs are published here; nothing is tuned on test items.
+Jev 1.14 (TypeSafe), OpenAI's Decisions API (GPT-6 Luna) and Claude Opus 5.5 on the same five decision tests, all public data: 1,000 items each on T1 and T4, 2,000 on T2 and T3 (1,999 on T3), 1,071 on T5. Run from London on 17 October 2026 by Gbolagade Ishola. Results, items and logs are published here; nothing is tuned on test items.
 
 ## The tests
 
